@@ -22,9 +22,9 @@ export default function LoginPage() {
       if (success) {
         // Redirigir según el tipo de usuario
         if (email === "tipster@prueba.com") {
-          router.push("/tipsterDashboard");
+          router.push("/tipster/dashboard");
         } else {
-          router.push("/userDashboard");
+          router.push("/user/dashboard");
         }
       }
     } catch (error) {
