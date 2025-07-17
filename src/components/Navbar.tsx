@@ -3,46 +3,33 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { Target } from "lucide-react";
 import { Button } from "./ui/button";
+import ThemeMode from "./ThemeMode";
 
 const Navbar = () => {
   const router = useRouter();
   return (
-    <header className="bg-white border-b border-[#E5E5E6] sticky top-0 z-50">
+    <header className="bg-background border-b border-border sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-2">
-            <Target className="h-8 w-8 text-[#1e9df1]" />
-            <span className="text-xl font-bold text-[#0f1419]">TipsterPro</span>
+            <Target className="h-8 w-8 " />
+            <span className="text-xl font-bold text-foreground">TipsterPro</span>
           </div>
           <nav className="hidden md:flex space-x-8">
-            <a
-              href="#"
-              className="text-[#0f1419] hover:text-[#1e9df1] font-medium"
-            >
-              Tipsters
-            </a>
-            <a
-              href="#"
-              className="text-[#0f1419] hover:text-[#1e9df1] font-medium"
-            >
-              Picks
-            </a>
-            <a
-              href="#"
-              className="text-[#0f1419] hover:text-[#1e9df1] font-medium"
-            >
-              Estadísticas
-            </a>
+            <a href="#" className="text-foreground hover:text-primary font-medium">Tipsters</a>
+            <a href="#" className="text-foreground hover:text-primary font-medium">Picks</a>
+            <a href="#" className="text-foreground hover:text-primary font-medium">Estadísticas</a>
           </nav>
           <div className="flex items-center space-x-4">
+          <ThemeMode />
             <Button
               onClick={() => router.push("/login")}
               variant="ghost"
-              className="text-[#0f1419]"
+              className="text-foreground"
             >
               Iniciar Sesión
             </Button>
-            <Button className="bg-[#1e9df1] hover:bg-[#1e9df1]/90 text-white">
+            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
               Registrarse
             </Button>
           </div>

@@ -84,16 +84,15 @@ export default function MultiStepPickForm({ onCancel, onSuccess }: { onCancel?: 
   };
 
   return (
-    <form className="max-w-2xl mx-auto bg-[#f7f8f8] rounded-xl p-6 shadow-md" onSubmit={confirmar}>
+    <form className="max-w-2xl mx-auto bg-card rounded-xl p-6 shadow-md" onSubmit={confirmar}>
       {/* Paso 1 */}
       {step === 1 && (
         <div>
-          <h3 className="text-2xl font-bold text-[#0f1419] mb-4">1. Selección del encuentro</h3>
+          <h3 className="text-2xl font-bold text-foreground mb-4">1. Selección del encuentro</h3>
           <input
             type="text"
             placeholder="Buscar partido..."
-            className="w-full mb-4 p-2 border rounded-md"
-            style={{ borderColor: "#1e9df1" }}
+            className="w-full mb-4 p-2 border rounded-md border-primary"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -101,38 +100,38 @@ export default function MultiStepPickForm({ onCancel, onSuccess }: { onCancel?: 
             {partidosFiltrados.map((p) => (
               <Card
                 key={p.id}
-                className={`cursor-pointer border-2 ${form.partido === p.id ? "border-[#1e9df1]" : "border-[#E3ECF6]"}`}
+                className={`cursor-pointer border-2 ${form.partido === p.id ? "border-primary" : "border-border"}`}
                 onClick={() => setForm({ ...form, partido: p.id })}
               >
                 <CardContent className="flex flex-col md:flex-row md:items-center gap-2 p-4">
                   <div className="flex-1">
-                    <div className="font-semibold text-[#0f1419]">{p.event}</div>
-                    <div className="text-sm text-gray-500">{p.sport}</div>
+                    <div className="font-semibold text-foreground">{p.event}</div>
+                    <div className="text-sm text-muted-foreground">{p.sport}</div>
                   </div>
                   <div className="flex flex-col md:flex-row gap-2 items-end md:items-center">
-                    <Badge className="bg-[#1e9df1]/10 text-[#1e9df1]">{p.date}</Badge>
-                    <Badge className="bg-[#00b87a]/10 text-[#00b87a]">{p.odds} cuota</Badge>
+                    <Badge className="bg-primary/10 text-primary">{p.date}</Badge>
+                    <Badge className="bg-success/10 text-success">{p.odds} cuota</Badge>
                   </div>
                 </CardContent>
               </Card>
             ))}
           </div>
           <div className="flex justify-center gap-4 mt-6">
-            <Button type="button" variant="outline" onClick={onCancel} className="text-[#0f1419]">Atrás</Button>
-            <Button type="button" className="bg-[#1e9df1] text-white" onClick={siguiente} disabled={!paso1Valido}>Siguiente</Button>
+            <Button type="button" variant="outline" onClick={onCancel} className="text-foreground">Atrás</Button>
+            <Button type="button" className="bg-primary text-primary-foreground" onClick={siguiente} disabled={!paso1Valido}>Siguiente</Button>
           </div>
         </div>
       )}
       {/* Paso 2 */}
       {step === 2 && (
         <div>
-          <h3 className="text-2xl font-bold text-[#0f1419] mb-4">2. Selección del tipo de apuesta</h3>
+          <h3 className="text-2xl font-bold text-foreground mb-4">2. Selección del tipo de apuesta</h3>
           <div className="grid grid-cols-1 gap-4 mb-6">
             {/* Mercado Principal */}
             <div className="border rounded-lg">
               <button
                 type="button"
-                className="w-full flex items-center justify-between px-4 py-3 text-left text-[#0f1419] font-semibold focus:outline-none"
+                className="w-full flex items-center justify-between px-4 py-3 text-left text-foreground font-semibold focus:outline-none"
                 onClick={() => setOpenDropdown(openDropdown === 'principal' ? null : 'principal')}
                 disabled={!!form.mercado && form.tipoMercado !== 'principal'}
               >
@@ -145,7 +144,7 @@ export default function MultiStepPickForm({ onCancel, onSuccess }: { onCancel?: 
                     <button
                       key={m}
                       type="button"
-                      className={`w-full text-left px-3 py-2 rounded-md font-medium transition-colors ${form.mercado === m && form.tipoMercado === 'principal' ? 'bg-[#1e9df1] text-white' : 'bg-[#E3ECF6] text-[#0f1419] hover:bg-[#d0eafd]'}`}
+                      className={`w-full text-left px-3 py-2 rounded-md font-medium transition-colors ${form.mercado === m && form.tipoMercado === 'principal' ? 'bg-primary text-primary-foreground' : 'bg-secondary text-foreground hover:bg-accent'}`}
                       onClick={() => { handleCheckbox('principal', m); }}
                     >
                       {m}
@@ -208,15 +207,15 @@ export default function MultiStepPickForm({ onCancel, onSuccess }: { onCancel?: 
             </div>
           </div>
           <div className="flex justify-center gap-4 mt-6">
-            <Button type="button" variant="outline" onClick={atras} className="text-[#0f1419]">Atrás</Button>
-            <Button type="button" className="bg-[#1e9df1] text-white" onClick={siguiente} disabled={!paso2Valido}>Siguiente</Button>
+            <Button type="button" variant="outline" onClick={atras} className="text-foreground">Atrás</Button>
+            <Button type="button" className="bg-primary text-primary-foreground" onClick={siguiente} disabled={!paso2Valido}>Siguiente</Button>
           </div>
         </div>
       )}
       {/* Paso 3 */}
       {step === 3 && (
         <div>
-          <h3 className="text-2xl font-bold text-[#0f1419] mb-4">3. Análisis personalizado y monetización</h3>
+          <h3 className="text-2xl font-bold text-foreground mb-4">3. Análisis personalizado y monetización</h3>
           <textarea
             className="w-full p-2 border rounded-md mb-4"
             style={{ borderColor: "#1e9df1" }}
@@ -244,7 +243,7 @@ export default function MultiStepPickForm({ onCancel, onSuccess }: { onCancel?: 
                   onChange={() => setForm({ ...form, plan: plan.value, gratuito: false })}
                   disabled={form.gratuito}
                 />
-                <span className="font-medium text-[#0f1419]">Plan {plan.label}</span>
+                <span className="font-medium text-foreground">Plan {plan.label}</span>
               </label>
             ))}
             <label className="flex items-center gap-2 cursor-pointer">
@@ -253,46 +252,46 @@ export default function MultiStepPickForm({ onCancel, onSuccess }: { onCancel?: 
                 checked={form.gratuito}
                 onChange={() => setForm({ ...form, gratuito: !form.gratuito, plan: null })}
               />
-              <span className="font-medium text-[#00b87a]">Pick Gratuito</span>
+              <span className="font-medium text-success">Pick Gratuito</span>
             </label>
           </div>
           <div className="flex justify-center gap-4 mt-6">
-            <Button type="button" variant="outline" onClick={atras} className="text-[#0f1419]">Atrás</Button>
-            <Button type="button" variant="ghost" onClick={omitir} className="text-[#1e9df1]">Omitir</Button>
-            <Button type="button" className="bg-[#1e9df1] text-white" onClick={siguiente} disabled={!paso3Valido}>Siguiente</Button>
+            <Button type="button" variant="outline" onClick={atras} className="text-foreground">Atrás</Button>
+            <Button type="button" variant="ghost" onClick={omitir} className="text-primary">Omitir</Button>
+            <Button type="button" className="bg-primary text-primary-foreground" onClick={siguiente} disabled={!paso3Valido}>Siguiente</Button>
           </div>
         </div>
       )}
       {/* Paso 4 */}
       {step === 4 && (
         <div>
-          <h3 className="text-2xl font-bold text-[#0f1419] mb-4">4. Resumen del pick</h3>
+          <h3 className="text-2xl font-bold text-foreground mb-4">4. Resumen del pick</h3>
           <Card className="mb-6">
             <CardContent className="p-4">
               <div className="mb-2">
-                <span className="font-semibold text-[#0f1419]">Partido:</span> {partido?.event}
+                <span className="font-semibold text-foreground">Partido:</span> {partido?.event}
               </div>
               <div className="mb-2">
-                <span className="font-semibold text-[#0f1419]">Fecha:</span> {partido?.date}
+                <span className="font-semibold text-foreground">Fecha:</span> {partido?.date}
               </div>
               <div className="mb-2">
-                <span className="font-semibold text-[#0f1419]">Apuesta seleccionada:</span> {form.mercado}
+                <span className="font-semibold text-foreground">Apuesta seleccionada:</span> {form.mercado}
               </div>
               {form.analisis && (
                 <div className="mb-2">
-                  <span className="font-semibold text-[#0f1419]">Análisis:</span> {form.analisis}
+                  <span className="font-semibold text-foreground">Análisis:</span> {form.analisis}
                 </div>
               )}
               <div className="mb-2">
-                <span className="font-semibold text-[#0f1419]">Plan:</span> {form.gratuito ? "Gratuito" : PLANES.find((p) => p.value === form.plan)?.label || "-"}
+                <span className="font-semibold text-foreground">Plan:</span> {form.gratuito ? "Gratuito" : PLANES.find((p) => p.value === form.plan)?.label || "-"}
               </div>
-              {audioFile && <div className="mb-2 text-[#1e9df1]">Audio subido: {audioFile.name}</div>}
-              {imageFile && <div className="mb-2 text-[#1e9df1]">Imagen subida: {imageFile.name}</div>}
+              {audioFile && <div className="mb-2 text-primary">Audio subido: {audioFile.name}</div>}
+              {imageFile && <div className="mb-2 text-primary">Imagen subida: {imageFile.name}</div>}
             </CardContent>
           </Card>
           <div className="flex justify-center gap-4 mt-6">
-            <Button type="button" variant="outline" onClick={atras} className="text-[#0f1419]">Atrás</Button>
-            <Button type="submit" className="bg-[#00b87a] text-white">Confirmar y Crear Pick</Button>
+            <Button type="button" variant="outline" onClick={atras} className="text-foreground">Atrás</Button>
+            <Button type="submit" className="bg-success text-white">Confirmar y Crear Pick</Button>
           </div>
         </div>
       )}

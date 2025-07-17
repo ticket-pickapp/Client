@@ -25,21 +25,21 @@ const PickSection = () => {
     }
   };
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-[#0f1419] mb-4">
+          <h2 className="text-3xl font-bold text-foreground mb-4">
             Picks del Día
           </h2>
-          <p className="text-gray-600 text-lg">
+          <p className="text-muted-foreground text-lg">
             Los mejores pronósticos de nuestros tipsters verificados
           </p>
         </div>
 
-        <div className="bg-white rounded-lg border border-[#E3ECF6] overflow-hidden">
+        <div className="bg-card rounded-lg border border-border overflow-hidden">
           {/* Table Header */}
-          <div className="bg-[#f7f8f8] px-6 py-4 border-b border-[#E3ECF6]">
-            <div className="grid grid-cols-12 gap-4 text-sm font-medium text-[#0f1419]">
+          <div className="bg-sidebar px-6 py-4 border-b border-border">
+            <div className="grid grid-cols-12 gap-4 text-sm font-medium text-foreground">
               <div className="col-span-3">Tipster</div>
               <div className="col-span-2 hidden md:block">Deporte</div>
               <div className="col-span-3">Partido</div>
@@ -55,18 +55,18 @@ const PickSection = () => {
             {picks.map((pick) => (
               <div key={pick.id}>
                 {/* Main Row */}
-                <div className="px-6 py-4 hover:bg-[#f7f9fa] transition-colors">
+                <div className="px-6 py-4 hover:bg-secondary transition-colors">
                   <div className="grid grid-cols-12 gap-4 items-center">
                     <div className="col-span-3 flex items-center gap-3">
-                      <div className="w-8 h-8 bg-[#1e9df1] rounded-full flex items-center justify-center text-white text-xs font-bold">
+                      <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground text-xs font-bold">
                         {pick.avatar}
                       </div>
                       <div>
-                        <div className="font-medium text-[#0f1419] text-sm">
+                        <div className="font-medium text-foreground text-sm">
                           {pick.tipster}
                         </div>
                         <div className="text-xs text-gray-500 flex items-center gap-1">
-                          <Star className="h-3 w-3 fill-[#f7b928] text-[#f7b928]" />
+                          <Star className="h-3 w-3 fill-accent text-accent" />
                           {pick.record.wins}/
                           {pick.record.wins + pick.record.losses}
                         </div>
@@ -75,24 +75,24 @@ const PickSection = () => {
                     <div className="col-span-2 hidden md:block">
                       <Badge
                         variant="secondary"
-                        className="bg-[#E3ECF6] text-[#0f1419]"
+                        className="bg-secondary text-foreground"
                       >
                         {pick.sport}
                       </Badge>
                     </div>
                     <div className="col-span-3">
-                      <div className="font-medium text-[#0f1419] text-sm">
+                      <div className="font-medium text-foreground text-sm">
                         {pick.match}
                       </div>
                     </div>
                     <div className="col-span-1 hidden sm:block">
-                      <div className="flex items-center gap-1 text-sm text-gray-600">
+                      <div className="flex items-center gap-1 text-sm text-muted-foreground">
                         <Clock className="h-3 w-3" />
                         {pick.time}
                       </div>
                     </div>
                     <div className="col-span-1">
-                      <div className="font-bold text-[#00b87a]">
+                      <div className="font-bold text-success">
                         {pick.odds}
                       </div>
                     </div>
@@ -120,55 +120,55 @@ const PickSection = () => {
 
                 {/* Expanded Content */}
                 {expandedPick === pick.id && (
-                  <div className="px-6 py-4 bg-[#f7f9fa] border-t border-[#E3ECF6]">
+                  <div className="px-6 py-4 bg-sidebar border-t border-border">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                       <div>
-                        <h4 className="font-semibold text-[#0f1419] mb-2">
+                        <h4 className="font-semibold text-foreground mb-2">
                           Análisis
                         </h4>
-                        <p className="text-gray-600 text-sm mb-4">
+                        <p className="text-muted-foreground text-sm mb-4">
                           {pick.analysis}
                         </p>
                         <div className="flex items-center gap-4 text-sm">
                           <div>
-                            <span className="text-gray-500">
+                            <span className="text-muted-foreground">
                               Tipo de apuesta:
                             </span>
-                            <span className="ml-2 font-medium text-[#0f1419]">
+                            <span className="ml-2 font-medium text-foreground">
                               {pick.betType}
                             </span>
                           </div>
                         </div>
                       </div>
                       <div>
-                        <h4 className="font-semibold text-[#0f1419] mb-2">
+                        <h4 className="font-semibold text-foreground mb-2">
                           Estadísticas del Tipster
                         </h4>
                         <div className="space-y-2 text-sm">
                           <div className="flex justify-between">
-                            <span className="text-gray-500">Aciertos:</span>
-                            <span className="font-medium text-[#00b87a]">
+                            <span className="text-muted-foreground">Aciertos:</span>
+                            <span className="font-medium text-success">
                               {pick.record.wins}
                             </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-gray-500">Fallos:</span>
-                            <span className="font-medium text-[#f4212e]">
+                            <span className="text-muted-foreground">Fallos:</span>
+                            <span className="font-medium text-destructive">
                               {pick.record.losses}
                             </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-gray-500">
+                            <span className="text-muted-foreground">
                               Compras del pick:
                             </span>
-                            <span className="font-medium text-[#0f1419] flex items-center gap-1">
+                            <span className="font-medium text-foreground flex items-center gap-1">
                               <Users className="h-3 w-3" />
                               {pick.purchases}
                             </span>
                           </div>
                         </div>
                         <Button 
-                          className="w-full mt-4 bg-[#1e9df1] hover:bg-[#1e9df1]/90 text-white"
+                          className="w-full mt-4 bg-primary hover:bg-primary/90 text-primary-foreground"
                           onClick={() => {
                             if (user && user.credits >= 5) {
                               updateCredits(-5);
