@@ -40,17 +40,15 @@ const UserDashboardPage = () => {
 
   return (
     <ProtectedRoute>
-      <section className="py-20 bg-[#f7f9fa]">
+      <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header con información del usuario */}
           <div className="flex justify-between items-center mb-8">
             <div>
-              <h2 className="text-3xl font-bold text-[#0f1419] mb-2">
+              <h2 className="text-3xl font-bold mb-2">
                 Mi Dashboard de Usuario
               </h2>
-              <p className="text-gray-600 text-lg">
-                Bienvenido, {user?.name}
-              </p>
+              <p className="text-lg">Bienvenido, {user?.name}</p>
             </div>
             <Button
               variant="outline"
@@ -64,14 +62,14 @@ const UserDashboardPage = () => {
 
           {/* User Summary Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            <Card className="bg-white border-[#E3ECF6] shadow-sm">
+            <Card className=" border-[#2d4057] shadow-sm">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600 mb-1">
-                      Créditos Disponibles
+                    <p className="text-sm mb-1">Créditos Disponibles</p>
+                    <p className="text-2xl font-bold text-[#1e9df1]">
+                      {user?.credits || 0}
                     </p>
-                    <p className="text-2xl font-bold text-[#1e9df1]">{user?.credits || 0}</p>
                   </div>
                   <div className="w-12 h-12 bg-[#1e9df1]/10 rounded-full flex items-center justify-center">
                     <Coins className="h-6 w-6 text-[#1e9df1]" />
@@ -80,11 +78,13 @@ const UserDashboardPage = () => {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-[#E3ECF6] shadow-sm">
+            <Card className="border-[#2d4057] shadow-sm">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600 mb-1">Apuestas Activas</p>
+                    <p className="text-sm  mb-1">
+                      Apuestas Activas
+                    </p>
                     <p className="text-2xl font-bold text-[#f7b928]">3</p>
                   </div>
                   <div className="w-12 h-12 bg-[#f7b928]/10 rounded-full flex items-center justify-center">
@@ -94,11 +94,13 @@ const UserDashboardPage = () => {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-[#E3ECF6] shadow-sm">
+            <Card className=" border-[#2d4057] shadow-sm">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600 mb-1">Apuestas Ganadas</p>
+                    <p className="text-sm mb-1">
+                      Apuestas Ganadas
+                    </p>
                     <p className="text-2xl font-bold text-[#00b87a]">12</p>
                   </div>
                   <div className="w-12 h-12 bg-[#00b87a]/10 rounded-full flex items-center justify-center">
@@ -110,17 +112,17 @@ const UserDashboardPage = () => {
           </div>
 
           {/* User Bets Table */}
-          <Card className="bg-white border-[#E3ECF6] shadow-sm">
+          <Card className="border-[#2d4057] shadow-sm">
             <CardContent className="p-0">
-              <div className="px-6 py-4 border-b border-[#E3ECF6]">
-                <h3 className="text-lg font-semibold text-[#0f1419]">
+              <div className="px-6 py-4 border-b border-[#2d4057]">
+                <h3 className="text-lg font-semibold">
                   Mis Apuestas Recientes
                 </h3>
               </div>
 
               {/* Table Header */}
-              <div className="bg-[#f7f8f8] px-6 py-3 border-b border-[#E3ECF6]">
-                <div className="grid grid-cols-12 gap-4 text-sm font-medium text-[#0f1419]">
+              <div className=" px-6 py-3 border-b border-[#2d4057]">
+                <div className="grid grid-cols-12 gap-4 text-sm font-medium ">
                   <div className="col-span-2">Fecha</div>
                   <div className="col-span-2 hidden sm:block">Deporte</div>
                   <div className="col-span-3">Partido</div>
@@ -131,7 +133,7 @@ const UserDashboardPage = () => {
               </div>
 
               {/* Table Body */}
-              <div className="divide-y divide-[#E3ECF6]">
+              <div className="divide-y divide-[#2d4057]">
                 {userBets.map((bet) => {
                   const statusInfo = getStatusIcon(bet.status);
                   return (
@@ -141,7 +143,7 @@ const UserDashboardPage = () => {
                     >
                       <div className="grid grid-cols-12 gap-4 items-center">
                         <div className="col-span-2">
-                          <div className="text-sm text-[#0f1419]">
+                          <div className="text-sm">
                             {new Date(bet.date).toLocaleDateString("es-ES", {
                               day: "2-digit",
                               month: "2-digit",
@@ -157,7 +159,7 @@ const UserDashboardPage = () => {
                           </Badge>
                         </div>
                         <div className="col-span-3">
-                          <div className="text-sm text-[#0f1419] font-medium">
+                          <div className="text-sm font-medium">
                             {bet.match}
                           </div>
                         </div>
@@ -170,12 +172,12 @@ const UserDashboardPage = () => {
                           </div>
                         </div>
                         <div className="col-span-2 hidden md:block">
-                          <div className="text-sm text-gray-600">
+                          <div className="text-sm ">
                             {bet.result}
                           </div>
                         </div>
                         <div className="col-span-1">
-                          <div className="text-sm font-medium text-[#0f1419]">
+                          <div className="text-sm font-medium ">
                             {bet.odds}
                           </div>
                         </div>
@@ -186,7 +188,7 @@ const UserDashboardPage = () => {
               </div>
 
               {/* View All Button */}
-              <div className="px-6 py-4 border-t border-[#E3ECF6] bg-[#f7f8f8]">
+              <div className="px-6 py-4 border-t border-[#2d4057] ">
                 <Button
                   variant="ghost"
                   className="w-full text-[#1e9df1] hover:bg-[#1e9df1]/10"

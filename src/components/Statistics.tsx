@@ -16,26 +16,28 @@ const Statistics = () => {
   return (
     <section className="py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex mb-16 text-center">
-          <div className="w-1/2 px-4">
+        <div className="flex mb-16 text-center justify-between">
+          <div className=" px-4">
             <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4">
-              Tu <span className="text-[#1e9df1]">socio de confianza</span> en
+              Tu <span className="text-[#1e9df1]">socio de confianza</span>
             </h2>
             <h2 className="text-4xl sm:text-5xl font-bold text-gray-400 mb-6">
-              apuestas deportivas.
+              <span className="text-white">en</span> apuestas deportivas.
             </h2>
           </div>
-          <div className="w-1/2 px-4 flex items-center">
-            <p className=" text-lg max-w-2xl mx-auto">
-              Construimos una plataforma sólida basada en tres pilares
-              fundamentales que garantizan tu éxito y tranquilidad en cada
-              apuesta.
-            </p>
+          <div className="px-4 flex">
+            <div className="w-[300px]">
+              <p className="text-md max-w-2xl text-start">
+                Construimos una plataforma sólida basada en tres pilares
+                fundamentales que garantizan tu éxito y tranquilidad en cada
+                apuesta.
+              </p>
+            </div>
           </div>
         </div>
 
         <div className="relative max-w-5xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-8">
             {/* Pilar 1 - Seguridad */}
             <div
               className={`relative p-8 rounded-2xl border transition-all duration-300 cursor-pointer ${

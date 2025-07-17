@@ -8,7 +8,7 @@ export default function CreatePickPage() {
   const router = useRouter();
   return (
     <ProtectedRoute>
-      <div className="py-12 min-h-screen bg-[#f7f8f8]">
+      <div className="py-12 min-h-screen">
         <h1 className="text-3xl font-bold text-[#0f1419] text-center mb-8">Crear Nuevo Pick</h1>
         <MultiStepPickForm onCancel={() => router.push("/tipster/dashboard")} onSuccess={() => router.push("/tipster/dashboard")} />
       </div>
