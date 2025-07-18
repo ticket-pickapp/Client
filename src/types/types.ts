@@ -35,3 +35,21 @@ export interface TipsterPick {
   originalOdds: string;
   purchases: number;
 }
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  credits: number;
+  isPremium: boolean;
+  role: "user" | "tipster";
+}
+
+export type AuthContextType = {
+  user: User | null;
+  login: (email: string, password: string) => void;
+  isLoggedIn: boolean;
+  logout: () => void;
+  updateCredits: (amount: number) => void;
+  updateUser: (updatedUser: Partial<User>) => void;
+};

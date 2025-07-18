@@ -41,14 +41,19 @@ const Statistics = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-8">
             {/* Pilar 1 - Seguridad */}
             <div
+              style={{
+                filter: "drop-shadow(0 8px 32px rgba(31, 38, 135, 0.37))",
+              }}
               className={`relative p-4 lg:p-8 rounded-xl lg:rounded-2xl border transition-all duration-300 cursor-pointer ${
                 activePillar === 0
                   ? "bg-[#1e9df1] border-[#1e9df1] lg:scale-110"
-                  : " border-gray-700 hover:border-gray-600 bg-white dark:bg-neutral-900"
+                  : " border-gray-400 hover:border-gray-500 bg-white dark:bg-neutral-900"
               }`}
               onClick={() => setActivePillar(activePillar === 0 ? null : 0)}
             >
-              <div className="text-3xl lg:text-6xl font-bold text-gray-600 mb-2 lg:mb-4">01.</div>
+              <div className="text-3xl lg:text-6xl font-bold text-gray-600 mb-2 lg:mb-4">
+                01.
+              </div>
               <h3
                 className={`text-lg lg:text-xl font-bold mb-2 lg:mb-3 ${
                   activePillar === 0 ? "text-white/90" : "text-gray-400"
@@ -91,14 +96,19 @@ const Statistics = () => {
 
             {/* Pilar 2 - Transparencia */}
             <div
+              style={{
+                filter: "drop-shadow(0 8px 32px rgba(31, 38, 135, 0.37))",
+              }}
               className={`relative p-4 lg:p-8 rounded-xl lg:rounded-2xl border transition-all duration-300 cursor-pointer ${
                 activePillar === 1
                   ? "bg-[#1e9df1] border-[#1e9df1] lg:scale-110"
-                  : " border-gray-700 hover:border-gray-600 bg-white dark:bg-neutral-900"
+                  : " border-gray-400 hover:border-gray-500 bg-white dark:bg-neutral-900"
               }`}
               onClick={() => setActivePillar(activePillar === 1 ? null : 1)}
             >
-              <div className="text-3xl lg:text-6xl font-bold text-gray-600 mb-2 lg:mb-4">02.</div>
+              <div className="text-3xl lg:text-6xl font-bold text-gray-600 mb-2 lg:mb-4">
+                02.
+              </div>
               <h3
                 className={`text-lg lg:text-xl font-bold mb-2 lg:mb-3 ${
                   activePillar === 1 ? "text-white" : "text-gray-400"
@@ -141,14 +151,19 @@ const Statistics = () => {
 
             {/* Pilar 3 - Herramientas */}
             <div
+              style={{
+                filter: "drop-shadow(0 8px 32px rgba(31, 38, 135, 0.37))",
+              }}
               className={`relative p-4 lg:p-8 rounded-xl lg:rounded-2xl border transition-all duration-300 cursor-pointer ${
                 activePillar === 2
                   ? "bg-[#1e9df1] border-[#1e9df1] lg:scale-110"
-                  : " border-gray-700 hover:border-gray-600 bg-white dark:bg-neutral-900"
+                  : " border-gray-400 hover:border-gray-500 bg-white dark:bg-neutral-900"
               }`}
               onClick={() => setActivePillar(activePillar === 2 ? null : 2)}
             >
-              <div className="text-3xl lg:text-6xl font-bold text-gray-600 mb-2 lg:mb-4">03.</div>
+              <div className="text-3xl lg:text-6xl font-bold text-gray-600 mb-2 lg:mb-4">
+                03.
+              </div>
               <h3
                 className={`text-lg lg:text-xl font-bold mb-2 lg:mb-3 ${
                   activePillar === 2 ? "text-white" : "text-gray-400"

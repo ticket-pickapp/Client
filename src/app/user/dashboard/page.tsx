@@ -4,13 +4,14 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
-import { useAuth } from "@/lib/auth-context";
+import { useAuthStore } from "@/lib/store/authStore";
 import { userBets } from "@/mock/userBet";
 import { CheckCircle, Clock, Coins, LogOut } from "lucide-react";
 import React from "react";
 
 const UserDashboardPage = () => {
-  const { user, logout } = useAuth();
+  const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -46,7 +47,7 @@ const UserDashboardPage = () => {
           <div className="flex justify-between items-center mb-8">
             <div>
               <h2 className="text-3xl font-bold mb-2">
-                Mi Dashboard de Usuario
+                Panel de control
               </h2>
               <p className="text-lg">Bienvenido, {user?.name}</p>
             </div>

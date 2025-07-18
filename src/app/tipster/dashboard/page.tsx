@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
-import { useAuth } from "@/lib/auth-context";
+import { useAuthStore } from "@/lib/store/authStore";
 import {
   CheckCircle,
   Clock,
@@ -18,7 +18,8 @@ import MultiStepPickForm from "@/components/MultiStepPickForm";
 import { useRouter } from "next/navigation";
 
 const TipsterDashboardPage = () => {
-  const { user, logout } = useAuth();
+  const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
   const router = useRouter();
   const [showForm, setShowForm] = React.useState(false);
 

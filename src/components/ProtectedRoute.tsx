@@ -1,7 +1,7 @@
 "use client";
 
-import { useAuth } from "@/lib/auth-context";
-import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/lib/store/authStore";
+import { useRouter, usePathname } from "next/navigation";
 import { useEffect } from "react";
 
 interface ProtectedRouteProps {
@@ -13,17 +13,18 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   children, 
   fallback 
 }) => {
-  const { isAuthenticated } = useAuth();
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      // Redirigir a login si no está autenticado
-      router.push("/login");
+    if (!isLoggedIn) {
+      // Redirigir a login si no está autenticado, guardando la ruta actual
+      router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
     }
-  }, [isAuthenticated, router]);
+  }, [isLoggedIn, router, pathname]);
 
-  if (!isAuthenticated) {
+  if (!isLoggedIn) {
     return fallback || (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">

@@ -2,30 +2,31 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useAuth } from "@/lib/auth-context";
-import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/lib/store/authStore";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuth();
+  const login = useAuthStore((state) => state.login);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     
     try {
-      const success = await login(email, password);
-      if (success) {
-        // Redirigir según el tipo de usuario
-        if (email === "tipster@prueba.com") {
-          router.push("/tipster/dashboard");
-        } else {
-          router.push("/user/dashboard");
-        }
+      login(email, password);
+      if (redirect) {
+        router.push(redirect);
+      } else if (email === "tipster@prueba.com") {
+        router.push("/tipster/dashboard");
+      } else {
+        router.push("/user/dashboard");
       }
     } catch (error) {
       console.error("Error de login:", error);

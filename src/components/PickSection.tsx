@@ -2,7 +2,7 @@
 import { picks } from "@/mock/pick";
 import { ChevronDown, ChevronUp, Clock, Star, Users } from "lucide-react";
 import { Badge } from "./ui/badge";
-import { useAuth } from "@/lib/auth-context";
+import { useAuthStore } from "@/lib/store/authStore";
 import React, { useState } from "react";
 import { Button } from "./ui/button";
 
@@ -11,7 +11,8 @@ const PickSection = () => {
   const [mobileExpandedPick, setMobileExpandedPick] = useState<number | null>(
     null
   );
-  const { user, updateCredits } = useAuth();
+  const user = useAuthStore((state) => state.user);
+  const updateCredits = useAuthStore((state) => state.updateCredits);
 
   const togglePick = (id: number) => {
     setExpandedPick(expandedPick === id ? null : id);
