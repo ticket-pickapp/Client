@@ -8,20 +8,25 @@ import { Button } from "./ui/button";
 
 const PickSection = () => {
   const [expandedPick, setExpandedPick] = useState<number | null>(null);
+  const [mobileExpandedPick, setMobileExpandedPick] = useState<number | null>(null);
   const { user, updateCredits } = useAuth();
 
   const togglePick = (id: number) => {
     setExpandedPick(expandedPick === id ? null : id);
   };
 
+  const toggleMobilePick = (id: number) => {
+    setMobileExpandedPick(mobileExpandedPick === id ? null : id);
+  };
+
   const getRankColor = (rank: string) => {
     switch (rank) {
       case "Platinum":
-        return "bg-gray-100 text-gray-800";
+        return "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200";
       case "Gold":
-        return "bg-yellow-100 text-yellow-800";
+        return "bg-amber-200 text-white dark:bg-amber-400";
       default:
-        return "bg-blue-100 text-blue-800";
+        return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200";
     }
   };
   return (
@@ -36,22 +41,23 @@ const PickSection = () => {
           </p>
         </div>
 
-        <div className="bg-card rounded-lg border border-border overflow-hidden">
+        {/* Desktop Table */}
+        <div className="hidden md:block bg-card rounded-lg border border-border overflow-hidden">
           {/* Table Header */}
           <div className="bg-sidebar px-6 py-4 border-b border-border">
             <div className="grid grid-cols-12 gap-4 text-sm font-medium text-foreground">
               <div className="col-span-3">Tipster</div>
-              <div className="col-span-2 hidden md:block">Deporte</div>
+              <div className="col-span-2">Deporte</div>
               <div className="col-span-3">Partido</div>
-              <div className="col-span-1 hidden sm:block">Hora</div>
+              <div className="col-span-1">Hora</div>
               <div className="col-span-1">Cuota</div>
-              <div className="col-span-1 hidden lg:block">Rango</div>
+              <div className="col-span-1">Rango</div>
               <div className="col-span-1">Acción</div>
             </div>
           </div>
 
           {/* Table Body */}
-          <div className="divide-y divide-[#E3ECF6]">
+          <div>
             {picks.map((pick) => (
               <div key={pick.id}>
                 {/* Main Row */}
@@ -72,7 +78,7 @@ const PickSection = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-span-2 hidden md:block">
+                    <div className="col-span-2">
                       <Badge
                         variant="secondary"
                         className="bg-secondary text-foreground"
@@ -85,7 +91,7 @@ const PickSection = () => {
                         {pick.match}
                       </div>
                     </div>
-                    <div className="col-span-1 hidden sm:block">
+                    <div className="col-span-1">
                       <div className="flex items-center gap-1 text-sm text-muted-foreground">
                         <Clock className="h-3 w-3" />
                         {pick.time}
@@ -96,7 +102,7 @@ const PickSection = () => {
                         {pick.odds}
                       </div>
                     </div>
-                    <div className="col-span-1 hidden lg:block">
+                    <div className="col-span-1">
                       <Badge className={getRankColor(pick.rank)}>
                         {pick.rank}
                       </Badge>
@@ -167,7 +173,7 @@ const PickSection = () => {
                             </span>
                           </div>
                         </div>
-                        <Button 
+                        <Button
                           className="w-full mt-4 bg-primary hover:bg-primary/90 text-primary-foreground"
                           onClick={() => {
                             if (user && user.credits >= 5) {
@@ -187,6 +193,123 @@ const PickSection = () => {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Mobile Cards */}
+        <div className="md:hidden space-y-4">
+          {picks.map((pick) => (
+            <div
+              key={pick.id}
+              className="bg-card rounded-lg border border-border p-4 cursor-pointer"
+              onClick={() => toggleMobilePick(pick.id)}
+            >
+              {/* Main Card Content */}
+              <div className="flex items-start justify-between mb-3">
+                <div className="flex items-center gap-3 flex-1">
+                  <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-primary-foreground text-sm font-bold">
+                    {pick.avatar}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-medium text-foreground text-sm truncate">
+                      {pick.tipster}
+                    </div>
+                    <div className="text-xs text-muted-foreground flex items-center gap-1">
+                      <Star className="h-3 w-3 fill-accent text-accent" />
+                      {pick.record.wins}/{pick.record.wins + pick.record.losses}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge className={getRankColor(pick.rank)}>
+                    {pick.rank}
+                  </Badge>
+                  {mobileExpandedPick === pick.id ? (
+                    <ChevronUp className="h-4 w-4 text-muted-foreground" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                  )}
+                </div>
+              </div>
+
+              {/* Match Info */}
+              <div className="mb-3">
+                <div className="font-medium text-foreground text-sm mb-1">
+                  {pick.match}
+                </div>
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <Badge variant="secondary" className="bg-secondary text-foreground text-xs">
+                    {pick.sport}
+                  </Badge>
+                  <div className="flex items-center gap-1">
+                    <Clock className="h-3 w-3" />
+                    {pick.time}
+                  </div>
+                </div>
+              </div>
+
+              {/* Expanded Mobile Content */}
+              {mobileExpandedPick === pick.id && (
+                <div className="mt-4 pt-4 border-t border-border space-y-4">
+                  {/* Cuota y estadísticas */}
+                  <div className="flex justify-between items-center">
+                    <div className="text-center">
+                      <div className="text-xs text-muted-foreground">Cuota</div>
+                      <div className="font-bold text-success text-lg">{pick.odds}</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-xs text-muted-foreground">Compras</div>
+                      <div className="font-medium text-foreground flex items-center gap-1">
+                        <Users className="h-3 w-3" />
+                        {pick.purchases}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Análisis */}
+                  <div>
+                    <h5 className="font-semibold text-foreground text-sm mb-2">
+                      Análisis
+                    </h5>
+                    <p className="text-muted-foreground text-xs leading-relaxed">
+                      {pick.analysis}
+                    </p>
+                  </div>
+
+                  {/* Estadísticas */}
+                  <div className="grid grid-cols-2 gap-4 text-xs">
+                    <div>
+                      <span className="text-muted-foreground">Aciertos:</span>
+                      <span className="ml-2 font-medium text-success">
+                        {pick.record.wins}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Fallos:</span>
+                      <span className="ml-2 font-medium text-destructive">
+                        {pick.record.losses}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Botón de compra */}
+                  <Button
+                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-sm"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (user && user.credits >= 5) {
+                        updateCredits(-5);
+                        alert("¡Pick comprado exitosamente!");
+                      } else {
+                        alert("No tienes suficientes créditos. Necesitas 5 créditos.");
+                      }
+                    }}
+                  >
+                    Comprar Pick - 5 monedas
+                  </Button>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </div>
     </section>

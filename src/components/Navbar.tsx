@@ -15,7 +15,7 @@ const Navbar = () => {
             onClick={() => router.push("/")}
             className="flex items-center space-x-2 cursor-pointer"
           >
-            <Target className="h-8 w-8 " />
+            <Target className="h-8 w-8 hidden lg:block" />
             <span className="text-xl font-bold text-foreground">
               TipsterPro
             </span>
@@ -40,16 +40,16 @@ const Navbar = () => {
               Estadísticas
             </a>
           </nav>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4 ">
             <ThemeMode />
             <Button
               onClick={() => router.push("/login")}
               variant="ghost"
-              className="text-foreground"
+              className="text-foreground  p-1 lg:p-2"
             >
               Iniciar Sesión
             </Button>
-            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
+            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground p-1 lg:p-2">
               Registrarse
             </Button>
           </div>

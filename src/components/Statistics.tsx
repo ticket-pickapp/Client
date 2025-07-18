@@ -16,18 +16,19 @@ const Statistics = () => {
   return (
     <section className="py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex mb-16 text-center justify-between">
+        <div className="flex flex-col lg:flex-row mb-16 text-center justify-between">
           <div className=" px-4">
-            <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4">
+            <h2 className="text-4xl sm:text-5xl font-bold mb-4">
               Tu <span className="text-[#1e9df1]">socio de confianza</span>
             </h2>
             <h2 className="text-4xl sm:text-5xl font-bold text-gray-400 mb-6">
-              <span className="text-white">en</span> apuestas deportivas.
+              <span className="text-black dark:text-white">en</span> apuestas
+              deportivas.
             </h2>
           </div>
           <div className="px-4 flex">
             <div className="w-[300px]">
-              <p className="text-md max-w-2xl text-start">
+              <p className="text-md max-w-2xl text-start text-gray-400">
                 Construimos una plataforma sólida basada en tres pilares
                 fundamentales que garantizan tu éxito y tranquilidad en cada
                 apuesta.
@@ -43,14 +44,14 @@ const Statistics = () => {
               className={`relative p-8 rounded-2xl border transition-all duration-300 cursor-pointer ${
                 activePillar === 0
                   ? "bg-[#1e9df1] border-[#1e9df1] scale-105 lg:scale-110"
-                  : "bg-gray-800/50 border-gray-700 hover:border-gray-600"
+                  : " border-gray-700 hover:border-gray-600 bg-white dark:bg-neutral-900"
               }`}
               onClick={() => setActivePillar(activePillar === 0 ? null : 0)}
             >
               <div className="text-6xl font-bold text-gray-600 mb-4">01.</div>
               <h3
                 className={`text-xl font-bold mb-3 ${
-                  activePillar === 0 ? "text-white" : "text-white"
+                  activePillar === 0 ? "text-white/90" : "text-gray-400"
                 }`}
               >
                 Seguridad en los Pagos
@@ -93,14 +94,14 @@ const Statistics = () => {
               className={`relative p-8 rounded-2xl border transition-all duration-300 cursor-pointer ${
                 activePillar === 1
                   ? "bg-[#1e9df1] border-[#1e9df1] scale-105 lg:scale-110"
-                  : "bg-gray-800/50 border-gray-700 hover:border-gray-600"
+                  : " border-gray-700 hover:border-gray-600 bg-white dark:bg-neutral-900"
               }`}
               onClick={() => setActivePillar(activePillar === 1 ? null : 1)}
             >
               <div className="text-6xl font-bold text-gray-600 mb-4">02.</div>
               <h3
                 className={`text-xl font-bold mb-3 ${
-                  activePillar === 1 ? "text-white" : "text-white"
+                  activePillar === 1 ? "text-white" : "text-gray-400"
                 }`}
               >
                 100% Transparencia
@@ -143,14 +144,14 @@ const Statistics = () => {
               className={`relative p-8 rounded-2xl border transition-all duration-300 cursor-pointer ${
                 activePillar === 2
                   ? "bg-[#1e9df1] border-[#1e9df1] scale-105 lg:scale-110"
-                  : "bg-gray-800/50 border-gray-700 hover:border-gray-600"
+                  : " border-gray-700 hover:border-gray-600 bg-white dark:bg-neutral-900"
               }`}
               onClick={() => setActivePillar(activePillar === 2 ? null : 2)}
             >
               <div className="text-6xl font-bold text-gray-600 mb-4">03.</div>
               <h3
                 className={`text-xl font-bold mb-3 ${
-                  activePillar === 2 ? "text-white" : "text-white"
+                  activePillar === 2 ? "text-white" : "text-gray-400"
                 }`}
               >
                 Mejores Herramientas

@@ -46,7 +46,7 @@
 :root {
   --radius: 0.625rem;
   /* Twitter Light Theme */
-  --background: #f7f9fa;
+  --background: #f2f2f2;
   --foreground: #0f1419;
   --card: #ffffff;
   --card-foreground: #0f1419;
@@ -81,7 +81,7 @@
 
 .dark {
   /* Twitter Dark Theme */
-  --background: #0f1419;
+  --background: #121212;
   --foreground: #f7f9fa;
   --card: #15202b;
   --card-foreground: #f7f9fa;
