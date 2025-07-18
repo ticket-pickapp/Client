@@ -8,7 +8,9 @@ import { Button } from "./ui/button";
 
 const PickSection = () => {
   const [expandedPick, setExpandedPick] = useState<number | null>(null);
-  const [mobileExpandedPick, setMobileExpandedPick] = useState<number | null>(null);
+  const [mobileExpandedPick, setMobileExpandedPick] = useState<number | null>(
+    null
+  );
   const { user, updateCredits } = useAuth();
 
   const togglePick = (id: number) => {
@@ -42,7 +44,12 @@ const PickSection = () => {
         </div>
 
         {/* Desktop Table */}
-        <div className="hidden md:block bg-card rounded-lg border border-border overflow-hidden">
+        <div
+          style={{
+            filter: "drop-shadow(0 8px 32px rgba(31, 38, 135, 0.37))",
+          }}
+          className="hidden md:block bg-card rounded-lg border border-border overflow-hidden"
+        >
           {/* Table Header */}
           <div className="bg-sidebar px-6 py-4 border-b border-border">
             <div className="grid grid-cols-12 gap-4 text-sm font-medium text-foreground">
@@ -98,9 +105,7 @@ const PickSection = () => {
                       </div>
                     </div>
                     <div className="col-span-1">
-                      <div className="font-bold text-success">
-                        {pick.odds}
-                      </div>
+                      <div className="font-bold text-success">{pick.odds}</div>
                     </div>
                     <div className="col-span-1">
                       <Badge className={getRankColor(pick.rank)}>
@@ -109,7 +114,7 @@ const PickSection = () => {
                     </div>
                     <div className="col-span-1">
                       <Button
-                        variant="ghost"
+                        variant="default"
                         size="sm"
                         onClick={() => togglePick(pick.id)}
                         className="p-1"
@@ -152,13 +157,17 @@ const PickSection = () => {
                         </h4>
                         <div className="space-y-2 text-sm">
                           <div className="flex justify-between">
-                            <span className="text-muted-foreground">Aciertos:</span>
+                            <span className="text-muted-foreground">
+                              Aciertos:
+                            </span>
                             <span className="font-medium text-success">
                               {pick.record.wins}
                             </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-muted-foreground">Fallos:</span>
+                            <span className="text-muted-foreground">
+                              Fallos:
+                            </span>
                             <span className="font-medium text-destructive">
                               {pick.record.losses}
                             </span>
@@ -180,7 +189,9 @@ const PickSection = () => {
                               updateCredits(-5);
                               alert("¡Pick comprado exitosamente!");
                             } else {
-                              alert("No tienes suficientes créditos. Necesitas 5 créditos.");
+                              alert(
+                                "No tienes suficientes créditos. Necesitas 5 créditos."
+                              );
                             }
                           }}
                         >
@@ -199,6 +210,9 @@ const PickSection = () => {
         <div className="md:hidden space-y-4">
           {picks.map((pick) => (
             <div
+            style={{
+              filter: "drop-shadow(0 8px 32px rgba(31, 38, 135, 0.37))",
+            }}
               key={pick.id}
               className="bg-card rounded-lg border border-border p-4 cursor-pointer"
               onClick={() => toggleMobilePick(pick.id)}
@@ -220,9 +234,7 @@ const PickSection = () => {
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Badge className={getRankColor(pick.rank)}>
-                    {pick.rank}
-                  </Badge>
+                  <Badge className={getRankColor(pick.rank)}>{pick.rank}</Badge>
                   {mobileExpandedPick === pick.id ? (
                     <ChevronUp className="h-4 w-4 text-muted-foreground" />
                   ) : (
@@ -237,7 +249,10 @@ const PickSection = () => {
                   {pick.match}
                 </div>
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <Badge variant="secondary" className="bg-secondary text-foreground text-xs">
+                  <Badge
+                    variant="secondary"
+                    className="bg-secondary text-foreground text-xs"
+                  >
                     {pick.sport}
                   </Badge>
                   <div className="flex items-center gap-1">
@@ -254,10 +269,14 @@ const PickSection = () => {
                   <div className="flex justify-between items-center">
                     <div className="text-center">
                       <div className="text-xs text-muted-foreground">Cuota</div>
-                      <div className="font-bold text-success text-lg">{pick.odds}</div>
+                      <div className="font-bold text-success text-lg">
+                        {pick.odds}
+                      </div>
                     </div>
                     <div className="text-center">
-                      <div className="text-xs text-muted-foreground">Compras</div>
+                      <div className="text-xs text-muted-foreground">
+                        Compras
+                      </div>
                       <div className="font-medium text-foreground flex items-center gap-1">
                         <Users className="h-3 w-3" />
                         {pick.purchases}
@@ -300,7 +319,9 @@ const PickSection = () => {
                         updateCredits(-5);
                         alert("¡Pick comprado exitosamente!");
                       } else {
-                        alert("No tienes suficientes créditos. Necesitas 5 créditos.");
+                        alert(
+                          "No tienes suficientes créditos. Necesitas 5 créditos."
+                        );
                       }
                     }}
                   >
