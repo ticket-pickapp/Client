@@ -19,14 +19,14 @@ const navItems = [
   {
     label: "Analytics",
     icon: <BarChart2 size={20} />,
-    href: "/tipster/analytics",
+    href: "/tipster/dashboard",
   },
   {
     label: "Configuración",
     icon: <Settings size={20} />,
-    href: "/tipster/settings",
+    href: "/tipster/dashboard",
   },
-  { label: "Perfil", icon: <User size={20} />, href: "/tipster/profile" },
+  { label: "Perfil", icon: <User size={20} />, href: "/tipster/dashboard" },
   {
     label: "Crear Pick",
     icon: <ListPlus size={20} />,

@@ -46,8 +46,12 @@ const Navbar = () => {
             <ThemeMode />
             {isLoggedIn ? (
               <Button
-                onClick={() => user?.role === "tipster" ? router.push("/tipster/dashboard") : router.push("/user/dashboard")}
-                className="p-1 lg:p-2 bg-transparent hover:bg-slate-300 text-black dark:text-white"
+                onClick={() =>
+                  user?.role === "tipster"
+                    ? router.push("/tipster/dashboard")
+                    : router.push("/user/dashboard")
+                }
+                className="transition-all p-1 lg:p-2 bg-transparent hover:bg-slate-300 dark:hover:text-black text-black dark:text-white"
               >
                 Mi Cuenta
               </Button>
