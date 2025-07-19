@@ -22,7 +22,7 @@ export default function LoginForm() {
     if (isLoggedIn && user?.role === "tipster") {
       router.replace("/tipster/dashboard");
     } else if (isLoggedIn && user?.role === "user") {
-      router.replace("/user/dashboard");
+      router.replace("/picks");
     }
   }, [isLoggedIn, user, router]);
 
