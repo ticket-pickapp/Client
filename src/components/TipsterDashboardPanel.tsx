@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -15,6 +16,9 @@ import {
   BarChart,
   Bar,
 } from "recharts";
+import { Button } from "./ui/button";
+import { useRouter } from "next/navigation";
+import { countriesData, earningsData, leaguesColors, leaguesData, picksTable, teamsData } from "@/mock/dashboard";
 
 // Hook para detectar el tema actual
 function useIsDarkTheme() {
@@ -33,62 +37,10 @@ function useIsDarkTheme() {
   return isDark;
 }
 
-const earningsData = [
-  { month: "Ene", value: 1200 },
-  { month: "Feb", value: 1800 },
-  { month: "Mar", value: 1500 },
-  { month: "Abr", value: 2100 },
-  { month: "May", value: 3050 },
-  { month: "Jun", value: 2500 },
-];
-
-const picksTable = [
-  {
-    date: "10/06/2024",
-    league: "LaLiga",
-    match: "Real Madrid vs Barcelona",
-    odds: "2.10",
-    result: "Ganado",
-  },
-  {
-    date: "09/06/2024",
-    league: "Premier League",
-    match: "Man City vs Liverpool",
-    odds: "1.95",
-    result: "Perdido",
-  },
-  {
-    date: "08/06/2024",
-    league: "Serie A",
-    match: "Juventus vs Inter",
-    odds: "2.30",
-    result: "Ganado",
-  },
-];
-
-const leaguesData = [
-  { name: "LaLiga", value: 45 },
-  { name: "Premier League", value: 38 },
-  { name: "Serie A", value: 22 },
-  { name: "Bundesliga", value: 18 },
-];
-const leaguesColors = ["#1e9df1", "#f7b928", "#00b87a", "#ff7849"];
-
-const teamsData = [
-  { name: "Real Madrid", acierto: 80 },
-  { name: "Manchester City", acierto: 75 },
-  { name: "Juventus", acierto: 70 },
-];
-
-const countriesData = [
-  { name: "España", value: 40 },
-  { name: "México", value: 25 },
-  { name: "Argentina", value: 15 },
-  { name: "Colombia", value: 9 },
-];
 const countriesColors = ["#1e9df1", "#00b87a", "#f7b928", "#ff7849"];
 
 const TipsterDashboardPanel: React.FC = () => {
+  const router = useRouter();
   const isDark = useIsDarkTheme();
   // Colores dependientes del tema
   const chartStroke = isDark ? "#d3d3d5" : "#18181b";
@@ -98,9 +50,17 @@ const TipsterDashboardPanel: React.FC = () => {
   return (
     <div className="w-full min-h-screen bg-background p-2 sm:p-4 md:p-6">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4 sm:mb-8">
-          Hola, Samir 👋
-        </h2>
+        <div className="flex justify-between items-center">
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4 sm:mb-8">
+            Hola, Samir 👋
+          </h2>
+          <Button
+            className="p-1 lg:p-2  dark:hover:bg-white/10 text-black dark:text-white hover:bg-black/10"
+            onClick={() => router.push("/tipster/create-pick")}
+          >
+            Crear Pick
+          </Button>
+        </div>
         {/* Resumen superior */}
         <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 mb-4 sm:mb-6">
           <Card
