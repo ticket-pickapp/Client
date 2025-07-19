@@ -1,18 +1,31 @@
 "use client";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { Target } from "lucide-react";
+import { Menu, Target } from "lucide-react";
 import { Button } from "./ui/button";
 import ThemeMode from "./ThemeMode";
 import { useAuthStore } from "@/lib/store/authStore";
+import { useSidebarStore } from "@/lib/store/sidebarStore";
 
 const Navbar = () => {
   const router = useRouter();
   const { isLoggedIn, user } = useAuthStore();
+  const { toggle } = useSidebarStore();
+
   return (
     <header className="bg-background border-b border-border sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
+          {/* Menú hamburguesa */}
+          {isLoggedIn && (
+            <button
+              onClick={toggle}
+              className="lg:hidden p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md"
+            >
+              <Menu className="h-5 w-5" />
+            </button>
+          )}
+
           <div
             onClick={() => router.push("/")}
             className="flex items-center space-x-2 cursor-pointer"
@@ -22,6 +35,7 @@ const Navbar = () => {
               TipsterPro
             </span>
           </div>
+
           <nav className="hidden md:flex space-x-8">
             <a
               href="#"
@@ -42,7 +56,8 @@ const Navbar = () => {
               Estadísticas
             </a>
           </nav>
-          <div className="flex items-center space-x-4 ">
+
+          <div className="flex items-center space-x-4">
             <ThemeMode />
             {isLoggedIn ? (
               <Button
@@ -63,10 +78,6 @@ const Navbar = () => {
                 Iniciar Sesión
               </Button>
             )}
-
-            {/* <Button className="bg-primary hover:bg-primary/90 text-primary-foreground p-1 lg:p-2">
-              Registrarse
-            </Button> */}
           </div>
         </div>
       </div>
