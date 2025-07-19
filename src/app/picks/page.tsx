@@ -195,11 +195,18 @@ const PicksPage = () => {
                   {/* Expanded Content */}
                   {expandedPick === pick.id && (
                     <div className="px-6 py-4 bg-sidebar border-t border-border relative">
-                      <AnimatePresence>
+                      <AnimatePresence mode="wait">
                         {!hasPurchasedPick(pick.id) && (
                           <motion.div
-                            initial={{ opacity: 1, backdropFilter: "blur(8px)" }}
-                            animate={{ opacity: 1, backdropFilter: "blur(8px)" }}
+                            key={`overlay-${pick.id}`}
+                            initial={{
+                              opacity: 1,
+                              backdropFilter: "blur(8px)",
+                            }}
+                            animate={{
+                              opacity: 1,
+                              backdropFilter: "blur(8px)",
+                            }}
                             exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
                             transition={{ duration: 0.4, ease: "easeInOut" }}
                             className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/40 rounded-lg"
@@ -222,35 +229,59 @@ const PicksPage = () => {
                       </AnimatePresence>
                       <motion.div
                         animate={{
-                          filter: hasPurchasedPick(pick.id) ? "blur(0px)" : "blur(8px)",
-                          pointerEvents: hasPurchasedPick(pick.id) ? "auto" : "none",
+                          filter: hasPurchasedPick(pick.id)
+                            ? "blur(0px)"
+                            : "blur(8px)",
+                          pointerEvents: hasPurchasedPick(pick.id)
+                            ? "auto"
+                            : "none",
                         }}
                         transition={{ duration: 0.4, ease: "easeInOut" }}
                       >
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                           <div>
-                            <h4 className="font-semibold text-foreground mb-2">Análisis</h4>
-                            <p className="text-muted-foreground text-sm mb-4">{pick.analysis}</p>
+                            <h4 className="font-semibold text-foreground mb-2">
+                              Análisis
+                            </h4>
+                            <p className="text-muted-foreground text-sm mb-4">
+                              {pick.analysis}
+                            </p>
                             <div className="flex items-center gap-4 text-sm">
                               <div>
-                                <span className="text-muted-foreground">Tipo de apuesta:</span>
-                                <span className="ml-2 font-medium text-foreground">{pick.betType}</span>
+                                <span className="text-muted-foreground">
+                                  Tipo de apuesta:
+                                </span>
+                                <span className="ml-2 font-medium text-foreground">
+                                  {pick.betType}
+                                </span>
                               </div>
                             </div>
                           </div>
                           <div>
-                            <h4 className="font-semibold text-foreground mb-2">Estadísticas del Tipster</h4>
+                            <h4 className="font-semibold text-foreground mb-2">
+                              Estadísticas del Tipster
+                            </h4>
                             <div className="space-y-2 text-sm">
                               <div className="flex justify-between">
-                                <span className="text-muted-foreground">Aciertos:</span>
-                                <span className="font-medium text-success">{pick.record.wins}</span>
+                                <span className="text-muted-foreground">
+                                  Aciertos:
+                                </span>
+                                <span className="font-medium text-success">
+                                  {pick.record.wins}
+                                </span>
                               </div>
                               <div className="flex justify-between">
-                                <span className="text-muted-foreground">Fallos:</span>
-                                <span className="font-medium text-destructive">{pick.record.losses}</span>
+                                <span className="text-muted-foreground">
+                                  Fallos:
+                                </span>
+                                <span className="font-medium text-destructive">
+                                  {pick.record.losses}
+                                </span>
                               </div>
                               <div className="flex justify-between">
-                                <span className="text-muted-foreground">Compras del pick:</span>
+                                <span className="text-muted-foreground">
+                                  Compras del pick:
+                                </span>
                                 <span className="font-medium text-foreground flex items-center gap-1">
                                   <Users className="h-3 w-3" />
                                   {pick.purchases}
@@ -340,14 +371,14 @@ const PicksPage = () => {
                           animate={{ opacity: 1, backdropFilter: "blur(8px)" }}
                           exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
                           transition={{ duration: 0.4, ease: "easeInOut" }}
-                          className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/40 rounded-lg"
+                          className="absolute inset-0 z-10 flex w-full h-full flex-col items-center justify-center bg-black/40 rounded-lg"
                           style={{ backdropFilter: "blur(8px)" }}
                         >
-                          <div className="text-white font-bold text-lg mb-4">
+                          <div className="text-white text-center font-bold text-lg mb-4">
                             Compra este pick para ver los detalles
                           </div>
                           <Button
-                            className="bg-primary hover:bg-primary/90 text-primary-foreground"
+                            className="bg-primary hover:bg-primary/90 text-white"
                             onClick={(e) => {
                               e.stopPropagation();
                               handleBuy(pick.id, getPickCost(pick.rank));
@@ -360,19 +391,29 @@ const PicksPage = () => {
                     </AnimatePresence>
                     <motion.div
                       animate={{
-                        filter: hasPurchasedPick(pick.id) ? "blur(0px)" : "blur(8px)",
-                        pointerEvents: hasPurchasedPick(pick.id) ? "auto" : "none",
+                        filter: hasPurchasedPick(pick.id)
+                          ? "blur(0px)"
+                          : "blur(8px)",
+                        pointerEvents: hasPurchasedPick(pick.id)
+                          ? "auto"
+                          : "none",
                       }}
                       transition={{ duration: 0.4, ease: "easeInOut" }}
                     >
                       {/* Cuota y estadísticas */}
                       <div className="flex justify-between items-center">
                         <div className="text-center">
-                          <div className="text-xs text-muted-foreground">Cuota</div>
-                          <div className="font-bold text-success text-lg">{pick.odds}</div>
+                          <div className="text-xs text-muted-foreground">
+                            Cuota
+                          </div>
+                          <div className="font-bold text-success text-lg">
+                            {pick.odds}
+                          </div>
                         </div>
                         <div className="text-center">
-                          <div className="text-xs text-muted-foreground">Compras</div>
+                          <div className="text-xs text-muted-foreground">
+                            Compras
+                          </div>
                           <div className="font-medium text-foreground flex items-center gap-1">
                             <Users className="h-3 w-3" />
                             {pick.purchases}
@@ -381,18 +422,28 @@ const PicksPage = () => {
                       </div>
                       {/* Análisis */}
                       <div>
-                        <h5 className="font-semibold text-foreground text-sm mb-2">Análisis</h5>
-                        <p className="text-muted-foreground text-xs leading-relaxed">{pick.analysis}</p>
+                        <h5 className="font-semibold text-foreground text-sm mb-2">
+                          Análisis
+                        </h5>
+                        <p className="text-muted-foreground text-xs leading-relaxed">
+                          {pick.analysis}
+                        </p>
                       </div>
                       {/* Estadísticas */}
                       <div className="grid grid-cols-2 gap-4 text-xs">
                         <div>
-                          <span className="text-muted-foreground">Aciertos:</span>
-                          <span className="ml-2 font-medium text-success">{pick.record.wins}</span>
+                          <span className="text-muted-foreground">
+                            Aciertos:
+                          </span>
+                          <span className="ml-2 font-medium text-success">
+                            {pick.record.wins}
+                          </span>
                         </div>
                         <div>
                           <span className="text-muted-foreground">Fallos:</span>
-                          <span className="ml-2 font-medium text-destructive">{pick.record.losses}</span>
+                          <span className="ml-2 font-medium text-destructive">
+                            {pick.record.losses}
+                          </span>
                         </div>
                       </div>
                     </motion.div>
