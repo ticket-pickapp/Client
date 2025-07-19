@@ -16,11 +16,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/lib/store/authStore";
 import { useSidebarStore } from "@/lib/store/sidebarStore";
+import { useUserStore } from "@/lib/store/userStore";
 
 const Sidebar: React.FC = () => {
   const router = useRouter();
   const { isOpen, close } = useSidebarStore();
-  const { user, logout } = useAuthStore();
+  const { user } = useUserStore();
+  const { logout } = useAuthStore();
 
   const handleLogout = () => {
     logout();

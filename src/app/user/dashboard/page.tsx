@@ -1,10 +1,10 @@
 "use client";
 
 import { ProtectedRoute } from "@/components/ProtectedRoute";
-import { useAuthStore } from "@/lib/store/authStore";
+import { useUserStore } from "@/lib/store/userStore";
 
 const UserDashboardPage = () => {
-  const user = useAuthStore((state) => state.user);
+  const user = useUserStore((state) => state.user);
 
   return (
     <ProtectedRoute>

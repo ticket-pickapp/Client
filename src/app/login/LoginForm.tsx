@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuthStore } from "@/lib/store/authStore";
+import { useUserStore } from "@/lib/store/userStore";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -15,7 +16,7 @@ export default function LoginForm() {
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect");
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  const user = useAuthStore((state) => state.user);
+  const user = useUserStore((state) => state.user);
 
   useEffect(() => {
     if (isLoggedIn && user?.role === "tipster") {

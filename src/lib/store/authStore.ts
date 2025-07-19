@@ -1,11 +1,17 @@
-import { AuthContextType, User } from "@/types/types";
+import { User } from "@/types/types";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { useUserStore } from "./userStore";
 
-export const useAuthStore = create<AuthContextType>()(
+export interface AuthStoreType {
+  isLoggedIn: boolean;
+  login: (email: string, password: string) => void;
+  logout: () => void;
+}
+
+export const useAuthStore = create<AuthStoreType>()(
   persist(
-    (set, get) => ({
-      user: null,
+    (set) => ({
       isLoggedIn: false,
       login: (email: string, password: string) => {
         let mockUser: User;
@@ -23,31 +29,23 @@ export const useAuthStore = create<AuthContextType>()(
             id: "1",
             name: "Juan Perez",
             email: email,
-            credits: 15,
+            credits: 16,
             isPremium: true,
             role: "user",
           };
         }
-        set({ user: mockUser, isLoggedIn: true });
+        set({ isLoggedIn: true });
+        // Inicializa la userStore
+        useUserStore.setState({ user: mockUser, purchasedPicks: [] });
       },
-      logout: () => set({ user: null, isLoggedIn: false }),
-      updateCredits: (amount: number) => {
-        const user = get().user;
-        if (user) {
-          set({ user: { ...user, credits: user.credits + amount } });
-        }
-      },
-      updateUser: (updatedUser: Partial<User>) => {
-        const user = get().user;
-        if (user) {
-          set({ user: { ...user, ...updatedUser } });
-        }
+      logout: () => {
+        set({ isLoggedIn: false });
+        useUserStore.getState().resetUser();
       },
     }),
     {
       name: "auth-storage",
       partialize: (state) => ({
-        user: state.user,
         isLoggedIn: state.isLoggedIn,
       }),
     }

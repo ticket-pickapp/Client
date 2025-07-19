@@ -6,10 +6,12 @@ import { Button } from "./ui/button";
 import ThemeMode from "./ThemeMode";
 import { useAuthStore } from "@/lib/store/authStore";
 import { useSidebarStore } from "@/lib/store/sidebarStore";
+import { useUserStore } from "@/lib/store/userStore";
 
 const Navbar = () => {
   const router = useRouter();
-  const { isLoggedIn, user, logout } = useAuthStore();
+  const { isLoggedIn, logout } = useAuthStore();
+  const user = useUserStore((state) => state.user);
   const { toggle } = useSidebarStore();
 
   return (

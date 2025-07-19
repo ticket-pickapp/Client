@@ -4,7 +4,7 @@ import { picks as picksMock } from "@/mock/pick";
 import { ChevronDown, ChevronUp, Clock, Star, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useAuthStore } from "@/lib/store/authStore";
+import { useUserStore } from "@/lib/store/userStore";
 
 const PICKS_PER_PAGE = 10;
 
@@ -19,13 +19,28 @@ const getRankColor = (rank: string) => {
   }
 };
 
+const getPickCost = (rank: string) => {
+  switch (rank) {
+    case "Platinum":
+      return 1;
+    case "Gold":
+      return 3;
+    case "Silver":
+      return 2;
+    default:
+      return 3;
+  }
+};
+
 const PicksPage = () => {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [expandedPick, setExpandedPick] = useState<number | null>(null);
   const [mobileExpandedPick, setMobileExpandedPick] = useState<number | null>(null);
-  const user = useAuthStore((state) => state.user);
-  const updateCredits = useAuthStore((state) => state.updateCredits);
+  const user = useUserStore((state) => state.user);
+  const updateCredits = useUserStore((state) => state.updateCredits);
+  const buyPick = useUserStore((state) => state.buyPick);
+  const hasPurchasedPick = useUserStore((state) => state.hasPurchasedPick);
 
   // Filtrado
   const filteredPicks = useMemo(() => {
@@ -156,50 +171,58 @@ const PicksPage = () => {
                   </div>
                   {/* Expanded Content */}
                   {expandedPick === pick.id && (
-                    <div className="px-6 py-4 bg-sidebar border-t border-border">
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div>
-                          <h4 className="font-semibold text-foreground mb-2">Análisis</h4>
-                          <p className="text-muted-foreground text-sm mb-4">{pick.analysis}</p>
-                          <div className="flex items-center gap-4 text-sm">
-                            <div>
-                              <span className="text-muted-foreground">Tipo de apuesta:</span>
-                              <span className="ml-2 font-medium text-foreground">{pick.betType}</span>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <h4 className="font-semibold text-foreground mb-2">Estadísticas del Tipster</h4>
-                          <div className="space-y-2 text-sm">
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">Aciertos:</span>
-                              <span className="font-medium text-success">{pick.record.wins}</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">Fallos:</span>
-                              <span className="font-medium text-destructive">{pick.record.losses}</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">Compras del pick:</span>
-                              <span className="font-medium text-foreground flex items-center gap-1">
-                                <Users className="h-3 w-3" />
-                                {pick.purchases}
-                              </span>
-                            </div>
-                          </div>
+                    <div className="px-6 py-4 bg-sidebar border-t border-border relative">
+                      {!hasPurchasedPick(pick.id) ? (
+                        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/40 rounded-lg backdrop-blur-sm">
+                          <div className="text-white font-bold text-lg mb-4">Compra este pick para ver los detalles</div>
                           <Button
-                            className="w-full mt-4 bg-primary hover:bg-primary/90 text-primary-foreground"
+                            className="bg-primary hover:bg-primary/90 text-primary-foreground"
                             onClick={() => {
-                              if (user && user.credits >= 5) {
-                                updateCredits(-5);
+                              const cost = getPickCost(pick.rank);
+                              const ok = buyPick(pick.id, cost);
+                              if (ok) {
                                 alert("¡Pick comprado exitosamente!");
                               } else {
-                                alert("No tienes suficientes créditos. Necesitas 5 créditos.");
+                                alert(`No tienes suficientes créditos. Necesitas ${cost} créditos.`);
                               }
                             }}
                           >
-                            Comprar Pick - 5 monedas
+                            Comprar Pick - {getPickCost(pick.rank)} monedas
                           </Button>
+                        </div>
+                      ) : null}
+                      <div className={hasPurchasedPick(pick.id) ? "" : "blur-sm select-none pointer-events-none"}>
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                          <div>
+                            <h4 className="font-semibold text-foreground mb-2">Análisis</h4>
+                            <p className="text-muted-foreground text-sm mb-4">{pick.analysis}</p>
+                            <div className="flex items-center gap-4 text-sm">
+                              <div>
+                                <span className="text-muted-foreground">Tipo de apuesta:</span>
+                                <span className="ml-2 font-medium text-foreground">{pick.betType}</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div>
+                            <h4 className="font-semibold text-foreground mb-2">Estadísticas del Tipster</h4>
+                            <div className="space-y-2 text-sm">
+                              <div className="flex justify-between">
+                                <span className="text-muted-foreground">Aciertos:</span>
+                                <span className="font-medium text-success">{pick.record.wins}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-muted-foreground">Fallos:</span>
+                                <span className="font-medium text-destructive">{pick.record.losses}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-muted-foreground">Compras del pick:</span>
+                                <span className="font-medium text-foreground flex items-center gap-1">
+                                  <Users className="h-3 w-3" />
+                                  {pick.purchases}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -260,52 +283,59 @@ const PicksPage = () => {
                 </div>
                 {/* Expanded Mobile Content */}
                 {mobileExpandedPick === pick.id && (
-                  <div className="mt-4 pt-4 border-t border-border space-y-4">
-                    {/* Cuota y estadísticas */}
-                    <div className="flex justify-between items-center">
-                      <div className="text-center">
-                        <div className="text-xs text-muted-foreground">Cuota</div>
-                        <div className="font-bold text-success text-lg">{pick.odds}</div>
+                  <div className="mt-4 pt-4 border-t border-border space-y-4 relative">
+                    {!hasPurchasedPick(pick.id) ? (
+                      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/40 rounded-lg backdrop-blur-sm">
+                        <div className="text-white font-bold text-lg mb-4">Compra este pick para ver los detalles</div>
+                        <Button
+                          className="bg-primary hover:bg-primary/90 text-primary-foreground"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            const cost = getPickCost(pick.rank);
+                            const ok = buyPick(pick.id, cost);
+                            if (ok) {
+                              alert("¡Pick comprado exitosamente!");
+                            } else {
+                              alert(`No tienes suficientes créditos. Necesitas ${cost} créditos.`);
+                            }
+                          }}
+                        >
+                          Comprar Pick - {getPickCost(pick.rank)} monedas
+                        </Button>
                       </div>
-                      <div className="text-center">
-                        <div className="text-xs text-muted-foreground">Compras</div>
-                        <div className="font-medium text-foreground flex items-center gap-1">
-                          <Users className="h-3 w-3" />
-                          {pick.purchases}
+                    ) : null}
+                    <div className={hasPurchasedPick(pick.id) ? "" : "blur-sm select-none pointer-events-none"}>
+                      {/* Cuota y estadísticas */}
+                      <div className="flex justify-between items-center">
+                        <div className="text-center">
+                          <div className="text-xs text-muted-foreground">Cuota</div>
+                          <div className="font-bold text-success text-lg">{pick.odds}</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-xs text-muted-foreground">Compras</div>
+                          <div className="font-medium text-foreground flex items-center gap-1">
+                            <Users className="h-3 w-3" />
+                            {pick.purchases}
+                          </div>
+                        </div>
+                      </div>
+                      {/* Análisis */}
+                      <div>
+                        <h5 className="font-semibold text-foreground text-sm mb-2">Análisis</h5>
+                        <p className="text-muted-foreground text-xs leading-relaxed">{pick.analysis}</p>
+                      </div>
+                      {/* Estadísticas */}
+                      <div className="grid grid-cols-2 gap-4 text-xs">
+                        <div>
+                          <span className="text-muted-foreground">Aciertos:</span>
+                          <span className="ml-2 font-medium text-success">{pick.record.wins}</span>
+                        </div>
+                        <div>
+                          <span className="text-muted-foreground">Fallos:</span>
+                          <span className="ml-2 font-medium text-destructive">{pick.record.losses}</span>
                         </div>
                       </div>
                     </div>
-                    {/* Análisis */}
-                    <div>
-                      <h5 className="font-semibold text-foreground text-sm mb-2">Análisis</h5>
-                      <p className="text-muted-foreground text-xs leading-relaxed">{pick.analysis}</p>
-                    </div>
-                    {/* Estadísticas */}
-                    <div className="grid grid-cols-2 gap-4 text-xs">
-                      <div>
-                        <span className="text-muted-foreground">Aciertos:</span>
-                        <span className="ml-2 font-medium text-success">{pick.record.wins}</span>
-                      </div>
-                      <div>
-                        <span className="text-muted-foreground">Fallos:</span>
-                        <span className="ml-2 font-medium text-destructive">{pick.record.losses}</span>
-                      </div>
-                    </div>
-                    {/* Botón de compra */}
-                    <Button
-                      className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-sm"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (user && user.credits >= 5) {
-                          updateCredits(-5);
-                          alert("¡Pick comprado exitosamente!");
-                        } else {
-                          alert("No tienes suficientes créditos. Necesitas 5 créditos.");
-                        }
-                      }}
-                    >
-                      Comprar Pick - 5 monedas
-                    </Button>
                   </div>
                 )}
               </div>
