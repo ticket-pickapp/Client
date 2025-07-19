@@ -5,6 +5,8 @@ import { ChevronDown, ChevronUp, Clock, Star, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useUserStore } from "@/lib/store/userStore";
+import { toast } from "sonner";
+import { motion, AnimatePresence } from "framer-motion";
 
 const PICKS_PER_PAGE = 10;
 
@@ -36,7 +38,9 @@ const PicksPage = () => {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [expandedPick, setExpandedPick] = useState<number | null>(null);
-  const [mobileExpandedPick, setMobileExpandedPick] = useState<number | null>(null);
+  const [mobileExpandedPick, setMobileExpandedPick] = useState<number | null>(
+    null
+  );
   const buyPick = useUserStore((state) => state.buyPick);
   const hasPurchasedPick = useUserStore((state) => state.hasPurchasedPick);
 
@@ -65,6 +69,19 @@ const PicksPage = () => {
   };
   const handleMobileExpand = (id: number) => {
     setMobileExpandedPick(mobileExpandedPick === id ? null : id);
+  };
+
+  const handleBuy = (pickId: number, cost: number) => {
+    const ok = buyPick(pickId, cost);
+    if (ok) {
+      toast.success("¡Pick comprado exitosamente!");
+      setExpandedPick(null);
+      setTimeout(() => setExpandedPick(pickId), 0);
+    } else {
+      toast.error(
+        `No tienes suficientes créditos. Necesitas ${cost} créditos.`
+      );
+    }
   };
 
   // Reset page si cambia el filtro
@@ -125,12 +142,16 @@ const PicksPage = () => {
                           </div>
                           <div className="text-xs text-gray-500 flex items-center gap-1">
                             <Star className="h-3 w-3 fill-accent text-accent" />
-                            {pick.record.wins}/{pick.record.wins + pick.record.losses}
+                            {pick.record.wins}/
+                            {pick.record.wins + pick.record.losses}
                           </div>
                         </div>
                       </div>
                       <div className="col-span-2">
-                        <Badge variant="secondary" className="bg-secondary text-foreground">
+                        <Badge
+                          variant="secondary"
+                          className="bg-secondary text-foreground"
+                        >
                           {pick.sport}
                         </Badge>
                       </div>
@@ -146,10 +167,14 @@ const PicksPage = () => {
                         </div>
                       </div>
                       <div className="col-span-1">
-                        <div className="font-bold text-success">{pick.odds}</div>
+                        <div className="font-bold text-success">
+                          {pick.odds}
+                        </div>
                       </div>
                       <div className="col-span-1">
-                        <Badge className={getRankColor(pick.rank)}>{pick.rank}</Badge>
+                        <Badge className={getRankColor(pick.rank)}>
+                          {pick.rank}
+                        </Badge>
                       </div>
                       <div className="col-span-1">
                         <Button
@@ -170,26 +195,38 @@ const PicksPage = () => {
                   {/* Expanded Content */}
                   {expandedPick === pick.id && (
                     <div className="px-6 py-4 bg-sidebar border-t border-border relative">
-                      {!hasPurchasedPick(pick.id) ? (
-                        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/40 rounded-lg backdrop-blur-sm">
-                          <div className="text-white font-bold text-lg mb-4">Compra este pick para ver los detalles</div>
-                          <Button
-                            className="bg-primary hover:bg-primary/90 text-primary-foreground"
-                            onClick={() => {
-                              const cost = getPickCost(pick.rank);
-                              const ok = buyPick(pick.id, cost);
-                              if (ok) {
-                                alert("¡Pick comprado exitosamente!");
-                              } else {
-                                alert(`No tienes suficientes créditos. Necesitas ${cost} créditos.`);
-                              }
-                            }}
+                      <AnimatePresence>
+                        {!hasPurchasedPick(pick.id) && (
+                          <motion.div
+                            initial={{ opacity: 1, backdropFilter: "blur(8px)" }}
+                            animate={{ opacity: 1, backdropFilter: "blur(8px)" }}
+                            exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
+                            transition={{ duration: 0.4, ease: "easeInOut" }}
+                            className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/40 rounded-lg"
+                            style={{ backdropFilter: "blur(8px)" }}
                           >
-                            Comprar Pick - {getPickCost(pick.rank)} monedas
-                          </Button>
-                        </div>
-                      ) : null}
-                      <div className={hasPurchasedPick(pick.id) ? "" : "blur-sm select-none pointer-events-none"}>
+                            <div className="text-white font-bold text-lg mb-4">
+                              Compra este pick para ver los detalles
+                            </div>
+                            <Button
+                              className="bg-primary hover:bg-primary/90 text-primary-foreground"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleBuy(pick.id, getPickCost(pick.rank));
+                              }}
+                            >
+                              Comprar Pick - {getPickCost(pick.rank)} monedas
+                            </Button>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                      <motion.div
+                        animate={{
+                          filter: hasPurchasedPick(pick.id) ? "blur(0px)" : "blur(8px)",
+                          pointerEvents: hasPurchasedPick(pick.id) ? "auto" : "none",
+                        }}
+                        transition={{ duration: 0.4, ease: "easeInOut" }}
+                      >
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                           <div>
                             <h4 className="font-semibold text-foreground mb-2">Análisis</h4>
@@ -222,7 +259,7 @@ const PicksPage = () => {
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </motion.div>
                     </div>
                   )}
                 </div>
@@ -234,12 +271,16 @@ const PicksPage = () => {
         {/* Mobile Cards */}
         <div className="md:hidden space-y-4">
           {paginatedPicks.length === 0 ? (
-            <div className="text-center text-muted-foreground py-8">No se encontraron picks.</div>
+            <div className="text-center text-muted-foreground py-8">
+              No se encontraron picks.
+            </div>
           ) : (
             paginatedPicks.map((pick) => (
               <div
                 key={pick.id}
-                style={{ filter: "drop-shadow(0 8px 32px rgba(31, 38, 135, 0.37))" }}
+                style={{
+                  filter: "drop-shadow(0 8px 32px rgba(31, 38, 135, 0.37))",
+                }}
                 className="bg-card rounded-lg border border-border p-4 cursor-pointer"
                 onClick={() => handleMobileExpand(pick.id)}
               >
@@ -250,15 +291,20 @@ const PicksPage = () => {
                       {pick.avatar}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="font-medium text-foreground text-sm truncate">{pick.tipster}</div>
+                      <div className="font-medium text-foreground text-sm truncate">
+                        {pick.tipster}
+                      </div>
                       <div className="text-xs text-muted-foreground flex items-center gap-1">
                         <Star className="h-3 w-3 fill-accent text-accent" />
-                        {pick.record.wins}/{pick.record.wins + pick.record.losses}
+                        {pick.record.wins}/
+                        {pick.record.wins + pick.record.losses}
                       </div>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Badge className={getRankColor(pick.rank)}>{pick.rank}</Badge>
+                    <Badge className={getRankColor(pick.rank)}>
+                      {pick.rank}
+                    </Badge>
                     {mobileExpandedPick === pick.id ? (
                       <ChevronUp className="h-4 w-4 text-muted-foreground" />
                     ) : (
@@ -268,9 +314,14 @@ const PicksPage = () => {
                 </div>
                 {/* Match Info */}
                 <div className="mb-3">
-                  <div className="font-medium text-foreground text-sm mb-1">{pick.match}</div>
+                  <div className="font-medium text-foreground text-sm mb-1">
+                    {pick.match}
+                  </div>
                   <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <Badge variant="secondary" className="bg-secondary text-foreground text-xs">
+                    <Badge
+                      variant="secondary"
+                      className="bg-secondary text-foreground text-xs"
+                    >
                       {pick.sport}
                     </Badge>
                     <div className="flex items-center gap-1">
@@ -282,27 +333,38 @@ const PicksPage = () => {
                 {/* Expanded Mobile Content */}
                 {mobileExpandedPick === pick.id && (
                   <div className="mt-4 pt-4 border-t border-border space-y-4 relative">
-                    {!hasPurchasedPick(pick.id) ? (
-                      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/40 rounded-lg backdrop-blur-sm">
-                        <div className="text-white font-bold text-lg mb-4">Compra este pick para ver los detalles</div>
-                        <Button
-                          className="bg-primary hover:bg-primary/90 text-primary-foreground"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            const cost = getPickCost(pick.rank);
-                            const ok = buyPick(pick.id, cost);
-                            if (ok) {
-                              alert("¡Pick comprado exitosamente!");
-                            } else {
-                              alert(`No tienes suficientes créditos. Necesitas ${cost} créditos.`);
-                            }
-                          }}
+                    <AnimatePresence>
+                      {!hasPurchasedPick(pick.id) && (
+                        <motion.div
+                          initial={{ opacity: 1, backdropFilter: "blur(8px)" }}
+                          animate={{ opacity: 1, backdropFilter: "blur(8px)" }}
+                          exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
+                          transition={{ duration: 0.4, ease: "easeInOut" }}
+                          className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/40 rounded-lg"
+                          style={{ backdropFilter: "blur(8px)" }}
                         >
-                          Comprar Pick - {getPickCost(pick.rank)} monedas
-                        </Button>
-                      </div>
-                    ) : null}
-                    <div className={hasPurchasedPick(pick.id) ? "" : "blur-sm select-none pointer-events-none"}>
+                          <div className="text-white font-bold text-lg mb-4">
+                            Compra este pick para ver los detalles
+                          </div>
+                          <Button
+                            className="bg-primary hover:bg-primary/90 text-primary-foreground"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleBuy(pick.id, getPickCost(pick.rank));
+                            }}
+                          >
+                            Comprar Pick - {getPickCost(pick.rank)} monedas
+                          </Button>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                    <motion.div
+                      animate={{
+                        filter: hasPurchasedPick(pick.id) ? "blur(0px)" : "blur(8px)",
+                        pointerEvents: hasPurchasedPick(pick.id) ? "auto" : "none",
+                      }}
+                      transition={{ duration: 0.4, ease: "easeInOut" }}
+                    >
                       {/* Cuota y estadísticas */}
                       <div className="flex justify-between items-center">
                         <div className="text-center">
@@ -333,7 +395,7 @@ const PicksPage = () => {
                           <span className="ml-2 font-medium text-destructive">{pick.record.losses}</span>
                         </div>
                       </div>
-                    </div>
+                    </motion.div>
                   </div>
                 )}
               </div>
