@@ -37,8 +37,6 @@ const PicksPage = () => {
   const [page, setPage] = useState(1);
   const [expandedPick, setExpandedPick] = useState<number | null>(null);
   const [mobileExpandedPick, setMobileExpandedPick] = useState<number | null>(null);
-  const user = useUserStore((state) => state.user);
-  const updateCredits = useUserStore((state) => state.updateCredits);
   const buyPick = useUserStore((state) => state.buyPick);
   const hasPurchasedPick = useUserStore((state) => state.hasPurchasedPick);
 
