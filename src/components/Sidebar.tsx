@@ -11,6 +11,7 @@ import {
   Heart,
   Bookmark,
   X,
+  Volleyball,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/lib/store/authStore";
@@ -59,6 +60,7 @@ const Sidebar: React.FC = () => {
           href: "/tipster/settings",
         },
         { label: "Perfil", icon: <User size={20} />, href: "/tipster/profile" },
+        { label: "Encuentros", icon: <Volleyball size={20} />, href: "/picks" },
       ];
     } else {
       return [
@@ -83,6 +85,7 @@ const Sidebar: React.FC = () => {
           href: "/user/settings",
         },
         { label: "Perfil", icon: <User size={20} />, href: "/user/profile" },
+        { label: "Encuentros", icon: <Volleyball size={20} />, href: "/picks" },
       ];
     }
   };
@@ -101,7 +104,7 @@ const Sidebar: React.FC = () => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed lg:hidden z-50 flex flex-col w-80 h-[90%] border-r border-gray-700 bg-background transition-transform duration-300 ease-in-out ${
+        className={`fixed lg:hidden z-50 flex flex-col w-80 h-[95%] border-r border-gray-700 bg-background transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >

@@ -23,7 +23,7 @@ export const useAuthStore = create<AuthContextType>()(
             id: "1",
             name: "Juan Perez",
             email: email,
-            credits: 247,
+            credits: 15,
             isPremium: true,
             role: "user",
           };

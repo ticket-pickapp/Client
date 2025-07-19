@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { LogOut, Menu, Target, User } from "lucide-react";
+import { Coins, LogOut, Menu, Target, User } from "lucide-react";
 import { Button } from "./ui/button";
 import ThemeMode from "./ThemeMode";
 import { useAuthStore } from "@/lib/store/authStore";
@@ -37,30 +37,24 @@ const Navbar = () => {
           </div>
 
           <nav className="hidden md:flex space-x-8">
-            <a
-              href="#"
-              className="text-foreground hover:text-primary font-medium"
+            <Button
+              onClick={() => router.push("/picks")}
+              className="text-foreground hover:text-primary font-medium bg-transparent hover:bg-slate-300 dark:hover:text-black transition-all p-1 lg:p-2 flex items-center gap-2"
             >
-              Tipsters
-            </a>
-            <a
-              href="#"
-              className="text-foreground hover:text-primary font-medium"
-            >
-              Picks
-            </a>
-            <a
-              href="#"
-              className="text-foreground hover:text-primary font-medium"
-            >
-              Estadísticas
-            </a>
+              Encuentros
+            </Button>
           </nav>
 
           <div className="flex items-center space-x-4">
-            <ThemeMode />
             {isLoggedIn ? (
-              <div className="hidden lg:block">
+              <div className="hidden lg:flex lg:items-center space-x-2">
+                <Button
+                  className="bg-transparent hover:bg-slate-300 dark:hover:text-black text-black dark:text-white rounded-full px-3 py-0 flex items-center 
+                  space-x-2"
+                >
+                  <Coins />
+                  <span className="p-1">{user?.credits}</span>
+                </Button>
                 <Button
                   onClick={() =>
                     user?.role === "tipster"
@@ -91,6 +85,7 @@ const Navbar = () => {
                 Iniciar Sesión
               </Button>
             )}
+            <ThemeMode />
           </div>
         </div>
       </div>
