@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React from "react";
 import { useRouter } from "next/navigation";
 import {
@@ -101,7 +101,7 @@ const Sidebar: React.FC = () => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed lg:hidden z-50 flex flex-col w-80 h-full border-r border-gray-700 bg-background transition-transform duration-300 ease-in-out ${
+        className={`fixed lg:hidden z-50 flex flex-col w-80 h-[90%] border-r border-gray-700 bg-background transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -164,4 +164,4 @@ const Sidebar: React.FC = () => {
   );
 };
 
-export default Sidebar; 
+export default Sidebar;

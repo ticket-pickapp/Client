@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { Menu, Target } from "lucide-react";
+import { LogOut, Menu, Target, User } from "lucide-react";
 import { Button } from "./ui/button";
 import ThemeMode from "./ThemeMode";
 import { useAuthStore } from "@/lib/store/authStore";
@@ -9,7 +9,7 @@ import { useSidebarStore } from "@/lib/store/sidebarStore";
 
 const Navbar = () => {
   const router = useRouter();
-  const { isLoggedIn, user } = useAuthStore();
+  const { isLoggedIn, user, logout } = useAuthStore();
   const { toggle } = useSidebarStore();
 
   return (
@@ -60,16 +60,29 @@ const Navbar = () => {
           <div className="flex items-center space-x-4">
             <ThemeMode />
             {isLoggedIn ? (
-              <Button
-                onClick={() =>
-                  user?.role === "tipster"
-                    ? router.push("/tipster/dashboard")
-                    : router.push("/user/dashboard")
-                }
-                className="transition-all p-1 lg:p-2 bg-transparent hover:bg-slate-300 dark:hover:text-black text-black dark:text-white"
-              >
-                Mi Cuenta
-              </Button>
+              <div className="hidden lg:block">
+                <Button
+                  onClick={() =>
+                    user?.role === "tipster"
+                      ? router.push("/tipster/dashboard")
+                      : router.push("/user/dashboard")
+                  }
+                  className="transition-all p-1 lg:p-2 bg-transparent hover:bg-slate-300 dark:hover:text-black text-black dark:text-white"
+                >
+                  <User />
+                  Mi Cuenta
+                </Button>
+                <Button
+                  onClick={() => {
+                    logout();
+                    router.push("/login");
+                  }}
+                  className="transition-all p-1 lg:p-2 bg-transparent hover:bg-slate-300 dark:hover:text-black text-black dark:text-white"
+                >
+                  <LogOut />
+                  Salir
+                </Button>
+              </div>
             ) : (
               <Button
                 onClick={() => router.push("/login")}
