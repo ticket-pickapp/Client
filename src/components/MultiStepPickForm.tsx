@@ -3,7 +3,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { tipsterPicks } from "@/mock/tipster";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, ImagePlus, Mic } from "lucide-react";
+import { Checkbox } from "./ui/checkbox";
+import { Label } from "./ui/label";
 
 const MERCADOS_PRINCIPALES = ["1X2", "Over/Under", "Doble Oportunidad"];
 const MERCADOS_AVANZADOS = ["Corners", "Tarjetas", "Hándicaps", "BTTS"];
@@ -78,11 +80,10 @@ export default function MultiStepPickForm({
   const paso1Valido = !!form.partido;
   const paso2Valido = !!form.mercado;
   const paso3Valido =
-    form.analisis.length > 0 ||
-    audioFile ||
-    imageFile ||
-    form.plan ||
-    form.gratuito;
+    // Al menos uno de estos debe existir
+    (form.analisis.length > 0 || audioFile || imageFile) &&
+    // Y uno solo entre `plan` o `gratuito`
+    ((form.plan && !form.gratuito) || (!form.plan && form.gratuito));
 
   // Navegación
   const siguiente = () => {
@@ -91,10 +92,6 @@ export default function MultiStepPickForm({
   };
   const atras = () => {
     setStep((s) => Math.max(s - 1, 1));
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-  const omitir = () => {
-    setStep(4);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -109,6 +106,9 @@ export default function MultiStepPickForm({
 
   return (
     <form
+      style={{
+        filter: "drop-shadow(0 8px 32px rgba(31, 38, 135, 0.37))",
+      }}
       className="max-w-2xl mx-auto border-gray-400 hover:border-gray-500 bg-white dark:bg-neutral-900 rounded-xl p-6 shadow-md"
       onSubmit={confirmar}
     >
@@ -130,7 +130,10 @@ export default function MultiStepPickForm({
               <Card
                 key={p.id}
                 style={{
-                  filter: form.partido === p.id ? "drop-shadow(0 4px 8px rgba(30, 157, 241, 0.5))" : "none",
+                  filter:
+                    form.partido === p.id
+                      ? "drop-shadow(0 4px 8px rgba(30, 157, 241, 0.5))"
+                      : "none",
                   transition: "filter 0.3s ease-in-out",
                 }}
                 className={`cursor-pointer border-2 border-gray-400 hover:border-gray-500 bg-white  dark:bg-neutral-900 ${
@@ -332,69 +335,114 @@ export default function MultiStepPickForm({
       {/* Paso 3 */}
       {step === 3 && (
         <div>
-          <h3 className="text-2xl font-bold text-foreground mb-4">
+          <h3 className="text-2xl font-bold text-foreground mb-6">
             3. Análisis personalizado y monetización
           </h3>
-          <textarea
-            className="w-full p-2 border rounded-md mb-4"
-            style={{ borderColor: "#1e9df1" }}
-            placeholder="Escribe tu análisis del partido..."
-            rows={4}
-            value={form.analisis}
-            onChange={(e) => setForm({ ...form, analisis: e.target.value })}
-          />
-          <div className="flex flex-col md:flex-row gap-4 mb-4">
-            <div className="flex-1">
-              <label className="block text-[#0f1419] mb-1">
-                Subir audio (opcional)
-              </label>
-              <input
-                type="file"
-                accept="audio/*"
-                onChange={(e) => handleFile(e, "audio")}
-              />
-            </div>
-            <div className="flex-1">
-              <label className="block text-[#0f1419] mb-1">
-                Subir imagen (opcional)
-              </label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => handleFile(e, "imagen")}
-              />
-            </div>
-          </div>
-          <div className="flex flex-wrap gap-4 mb-4">
-            {PLANES.map((plan) => (
-              <label
-                key={plan.value}
-                className="flex items-center gap-2 cursor-pointer"
-              >
-                <input
-                  type="checkbox"
-                  checked={form.plan === plan.value}
-                  onChange={() =>
-                    setForm({ ...form, plan: plan.value, gratuito: false })
-                  }
-                  disabled={form.gratuito}
-                />
-                <span className="font-medium text-foreground">
-                  Plan {plan.label}
-                </span>
-              </label>
-            ))}
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={form.gratuito}
-                onChange={() =>
-                  setForm({ ...form, gratuito: !form.gratuito, plan: null })
-                }
-              />
-              <span className="font-medium text-success">Pick Gratuito</span>
+
+          {/* Análisis */}
+          <div className="mb-6">
+            <label className="block font-medium text-foreground mb-2">
+              Análisis del partido
             </label>
+            <textarea
+              className="w-full p-3 border rounded-md bg-background text-foreground border-primary focus:outline-none focus:ring-2 focus:ring-primary"
+              placeholder="Escribe tu análisis del partido..."
+              rows={4}
+              value={form.analisis}
+              onChange={(e) => setForm({ ...form, analisis: e.target.value })}
+            />
           </div>
+
+          {/* Subida de archivos */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            <Button
+              asChild
+              variant="secondary"
+              className="w-full flex items-center justify-center gap-2"
+            >
+              <label className="cursor-pointer">
+                <Mic className="w-5 h-5" />
+                Subir audio
+                <input
+                  type="file"
+                  accept="audio/*"
+                  onChange={(e) => handleFile(e, "audio")}
+                  className="hidden"
+                />
+              </label>
+            </Button>
+
+            <Button
+              asChild
+              variant="secondary"
+              className="w-full flex items-center justify-center gap-2"
+            >
+              <label className="cursor-pointer">
+                <ImagePlus className="w-5 h-5" />
+                Subir imagen
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => handleFile(e, "imagen")}
+                  className="hidden"
+                />
+              </label>
+            </Button>
+          </div>
+
+          {/* Planes */}
+          <div className="mb-6 space-y-4">
+            <div className="font-medium text-foreground">
+              Selecciona el tipo de pick
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {PLANES.map((plan) => (
+                <div key={plan.value} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={`plan-${plan.value}`}
+                    checked={form.plan === plan.value}
+                    disabled={form.gratuito}
+                    onCheckedChange={(checked) =>
+                      setForm({
+                        ...form,
+                        plan: checked ? plan.value : null,
+                        gratuito: false,
+                      })
+                    }
+                  />
+                  <Label
+                    htmlFor={`plan-${plan.value}`}
+                    className="text-foreground font-medium"
+                  >
+                    Plan {plan.label}
+                  </Label>
+                </div>
+              ))}
+
+              {/* Pick gratuito */}
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="pick-gratuito"
+                  checked={form.gratuito}
+                  onCheckedChange={(checked: boolean) =>
+                    setForm({
+                      ...form,
+                      gratuito: checked,
+                      plan: null,
+                    })
+                  }
+                />
+                <Label
+                  htmlFor="pick-gratuito"
+                  className="text-success font-medium"
+                >
+                  Pick Gratuito
+                </Label>
+              </div>
+            </div>
+          </div>
+
+          {/* Navegación */}
           <div className="flex justify-center gap-4 mt-6">
             <Button
               type="button"
@@ -403,14 +451,6 @@ export default function MultiStepPickForm({
               className="text-foreground"
             >
               Atrás
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={omitir}
-              className="text-primary"
-            >
-              Omitir
             </Button>
             <Button
               type="button"
@@ -423,6 +463,7 @@ export default function MultiStepPickForm({
           </div>
         </div>
       )}
+
       {/* Paso 4 */}
       {step === 4 && (
         <div>
