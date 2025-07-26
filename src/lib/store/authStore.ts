@@ -20,7 +20,7 @@ export const useAuthStore = create<AuthStoreType>()(
             id: "2",
             name: "Tipster Profesional",
             email: email,
-            credits: 0,
+            credits: 100,
             isPremium: true,
             role: "tipster",
           };
@@ -29,7 +29,7 @@ export const useAuthStore = create<AuthStoreType>()(
             id: "1",
             name: "Juan Perez",
             email: email,
-            credits: 16,
+            credits: 100,
             isPremium: true,
             role: "user",
           };

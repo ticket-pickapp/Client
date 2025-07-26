@@ -116,8 +116,8 @@ const PicksPage = () => {
               <div className="col-span-3">Partido</div>
               <div className="col-span-1">Hora</div>
               <div className="col-span-1">Cuota</div>
-              <div className="col-span-1">Rango</div>
-              <div className="col-span-1">Acción</div>
+              <div className="col-span-1 flex justify-center">Rango</div>
+              <div className="col-span-1 flex justify-center">Acción</div>
             </div>
           </div>
           {/* Table Body */}
@@ -171,12 +171,12 @@ const PicksPage = () => {
                           {pick.odds}
                         </div>
                       </div>
-                      <div className="col-span-1">
+                      <div className="col-span-1 justify-center flex">
                         <Badge className={getRankColor(pick.rank)}>
                           {pick.rank}
                         </Badge>
                       </div>
-                      <div className="col-span-1">
+                      <div className="col-span-1 flex justify-center">
                         <Button
                           variant="default"
                           size="sm"
