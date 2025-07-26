@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/lib/store/authStore";
 import { useSidebarStore } from "@/lib/store/sidebarStore";
 import { useUserStore } from "@/lib/store/userStore";
+import ThemeMode from "./ThemeMode";
 
 const Sidebar: React.FC = () => {
   const router = useRouter();
@@ -98,15 +99,12 @@ const Sidebar: React.FC = () => {
     <>
       {/* Overlay para cerrar el sidebar */}
       {isOpen && (
-        <div
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
-          onClick={close}
-        />
+        <div className="fixed inset-0 bg-black/50 z-40" onClick={close} />
       )}
 
       {/* Sidebar */}
       <aside
-        className={`fixed lg:hidden z-50 flex flex-col w-80 h-[95%] border-r border-gray-700 bg-background transition-transform duration-300 ease-in-out ${
+        className={`fixed z-50 flex flex-col w-80 h-[95%] border-r border-gray-700 bg-background transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -123,7 +121,7 @@ const Sidebar: React.FC = () => {
 
         {/* Información del usuario */}
         <div className="p-6 border-b border-gray-700">
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-3 justify-between">
             <div className="w-10 h-10 bg-[#1e9df1] rounded-full flex items-center justify-center">
               <span className="text-white font-semibold">
                 {user?.name?.charAt(0) || "U"}
@@ -133,6 +131,7 @@ const Sidebar: React.FC = () => {
               <p className="font-semibold">{user?.name}</p>
               <p className="text-sm text-gray-500">{user?.email}</p>
             </div>
+            <ThemeMode />
           </div>
         </div>
 
