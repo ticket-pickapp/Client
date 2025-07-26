@@ -50,6 +50,10 @@ export default function MultiStepPickForm({
     p.event.toLowerCase().includes(search.toLowerCase())
   );
 
+  const handleSelectPartido = (partidoId: number) => {
+    setForm({ ...form, partido: partidoId });
+  };
+
   // Paso 2: lógica de selección única
   const handleCheckbox = (tipo: string, valor: string) => {
     setForm({
@@ -83,15 +87,15 @@ export default function MultiStepPickForm({
   // Navegación
   const siguiente = () => {
     setStep((s) => Math.min(s + 1, 4));
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const atras = () => {
     setStep((s) => Math.max(s - 1, 1));
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const omitir = () => {
     setStep(4);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   // Resumen
@@ -125,10 +129,16 @@ export default function MultiStepPickForm({
             {partidosFiltrados.map((p) => (
               <Card
                 key={p.id}
-                className={`cursor-pointer border-2 border-gray-400 hover:border-gray-500 bg-white dark:bg-neutral-900 ${
-                  form.partido === p.id ? "border-primary" : "border-border"
+                style={{
+                  filter: form.partido === p.id ? "drop-shadow(0 4px 8px rgba(30, 157, 241, 0.5))" : "none",
+                  transition: "filter 0.3s ease-in-out",
+                }}
+                className={`cursor-pointer border-2 border-gray-400 hover:border-gray-500 bg-white  dark:bg-neutral-900 ${
+                  form.partido === p.id
+                    ? "border-primary bg-stone-100 dark:bg-[#252525] hover:border-primary"
+                    : "border-border"
                 }`}
-                onClick={() => setForm({ ...form, partido: p.id })}
+                onClick={() => handleSelectPartido(p.id)}
               >
                 <CardContent className="flex flex-col md:flex-row md:items-center gap-2 p-4">
                   <div className="flex-1">
@@ -222,7 +232,7 @@ export default function MultiStepPickForm({
             <div className="border rounded-lg">
               <button
                 type="button"
-                className="w-full flex items-center justify-between px-4 py-3 text-left text-[#0f1419] font-semibold focus:outline-none"
+                className="w-full flex items-center justify-between px-4 py-3 text-left text-foreground font-semibold focus:outline-none"
                 onClick={() =>
                   setOpenDropdown(
                     openDropdown === "avanzado" ? null : "avanzado"
@@ -262,7 +272,7 @@ export default function MultiStepPickForm({
             <div className="border rounded-lg">
               <button
                 type="button"
-                className="w-full flex items-center justify-between px-4 py-3 text-left text-[#0f1419] font-semibold focus:outline-none"
+                className="w-full flex items-center justify-between px-4 py-3 text-left text-foreground font-semibold focus:outline-none"
                 onClick={() =>
                   setOpenDropdown(
                     openDropdown === "especial" ? null : "especial"
