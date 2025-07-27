@@ -139,11 +139,11 @@ const PicksPage = () => {
                           <div className="font-medium text-foreground text-sm">
                             {pick.tipster}
                           </div>
-                          <div className="text-xs text-gray-500 flex items-center gap-1">
+                          {/* <div className="text-xs text-gray-500 flex items-center gap-1">
                             <Star className="h-3 w-3 fill-accent text-accent" />
                             {pick.record.wins}/
                             {pick.record.wins + pick.record.losses}
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                       <div className="col-span-2">
