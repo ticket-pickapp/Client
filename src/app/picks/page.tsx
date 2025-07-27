@@ -191,7 +191,7 @@ const PicksPage = () => {
                   </div>
                   {/* Expanded Content */}
                   {expandedPick === pick.id || hasPurchasedPick(pick.id) ? (
-                    <div className="px-6 py-4 bg-sidebar border-t border-border relative">
+                    <div className="px-6 py-4 bg-sidebar dark:bg-black/20 border-t border-border relative">
                       <AnimatePresence mode="wait">
                         {!hasPurchasedPick(pick.id) && (
                           <motion.div
