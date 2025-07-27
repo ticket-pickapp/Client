@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 
 import Image from "next/image";
 
@@ -17,7 +17,7 @@ const Hero = () => {
             pronósticos y a los usuarios acceder a las mejores predicciones
             deportivas con total seguridad.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center lg:justify-start">
+          {/* <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center lg:justify-start">
             <Button
               size="lg"
               className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-lg shadow-lg"
@@ -31,7 +31,7 @@ const Hero = () => {
             >
               Ver demo
             </Button>
-          </div>
+          </div> */}
         </div>
         {/* Columna de imagen */}
         <div className="flex-1 flex items-center justify-center">

@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useMemo } from "react";
 import { picks as picksMock } from "@/mock/pick";
-import { ChevronDown, ChevronUp, Clock, Star, Users } from "lucide-react";
+import { Clock, Star, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useUserStore } from "@/lib/store/userStore";
@@ -41,8 +41,7 @@ const PicksPage = () => {
   const [mobileExpandedPick, setMobileExpandedPick] = useState<number | null>(
     null
   );
-  const buyPick = useUserStore((state) => state.buyPick);
-  const hasPurchasedPick = useUserStore((state) => state.hasPurchasedPick);
+  const { buyPick, hasPurchasedPick } = useUserStore();
 
   // Filtrado
   const filteredPicks = useMemo(() => {
@@ -117,7 +116,7 @@ const PicksPage = () => {
               <div className="col-span-1">Hora</div>
               <div className="col-span-1">Cuota</div>
               <div className="col-span-1 flex justify-center">Rango</div>
-              <div className="col-span-1 flex justify-center">Acción</div>
+              <div className="col-span-1 flex justify-center">Detalle</div>
             </div>
           </div>
           {/* Table Body */}
@@ -177,23 +176,21 @@ const PicksPage = () => {
                         </Badge>
                       </div>
                       <div className="col-span-1 flex justify-center">
-                        <Button
-                          variant="default"
-                          size="sm"
-                          onClick={() => handleExpand(pick.id)}
-                          className="p-1"
-                        >
-                          {expandedPick === pick.id ? (
-                            <ChevronUp className="h-4 w-4" />
-                          ) : (
-                            <ChevronDown className="h-4 w-4" />
-                          )}
-                        </Button>
+                        {!hasPurchasedPick(pick.id) && (
+                          <Button
+                            variant="default"
+                            size="sm"
+                            onClick={() => handleExpand(pick.id)}
+                            className="px-2"
+                          >
+                            Ver
+                          </Button>
+                        )}
                       </div>
                     </div>
                   </div>
                   {/* Expanded Content */}
-                  {expandedPick === pick.id && (
+                  {expandedPick === pick.id || hasPurchasedPick(pick.id) ? (
                     <div className="px-6 py-4 bg-sidebar border-t border-border relative">
                       <AnimatePresence mode="wait">
                         {!hasPurchasedPick(pick.id) && (
@@ -292,7 +289,7 @@ const PicksPage = () => {
                         </div>
                       </motion.div>
                     </div>
-                  )}
+                  ) : null}
                 </div>
               ))
             )}
@@ -332,14 +329,20 @@ const PicksPage = () => {
                       </div>
                     </div>
                   </div>
+
                   <div className="flex items-center gap-2">
                     <Badge className={getRankColor(pick.rank)}>
                       {pick.rank}
                     </Badge>
-                    {mobileExpandedPick === pick.id ? (
-                      <ChevronUp className="h-4 w-4 text-muted-foreground" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                    {!hasPurchasedPick(pick.id) && (
+                      <Button
+                        variant="default"
+                        size="sm"
+                        onClick={() => handleExpand(pick.id)}
+                        className="px-2"
+                      >
+                        Ver
+                      </Button>
                     )}
                   </div>
                 </div>
@@ -362,7 +365,7 @@ const PicksPage = () => {
                   </div>
                 </div>
                 {/* Expanded Mobile Content */}
-                {mobileExpandedPick === pick.id && (
+                {expandedPick === pick.id || hasPurchasedPick(pick.id) ? (
                   <div className="mt-4 pt-4 border-t border-border space-y-4 relative">
                     <AnimatePresence>
                       {!hasPurchasedPick(pick.id) && (
@@ -448,7 +451,7 @@ const PicksPage = () => {
                       </div>
                     </motion.div>
                   </div>
-                )}
+                ) : null}
               </div>
             ))
           )}
