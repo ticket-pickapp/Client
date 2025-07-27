@@ -19,6 +19,8 @@ const PLANES = [
   { label: "Platinum", value: "platinum" },
 ];
 
+type TypeDropdown = "principal" | "avanzado" | "especial";
+
 const initialState = {
   partido: null as number | null,
   mercado: null as string | null,
@@ -42,10 +44,11 @@ export default function MultiStepPickForm({
   const [audioFile, setAudioFile] = useState<File | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [search, setSearch] = useState("");
-  // Estado para dropdowns
-  const [openDropdown, setOpenDropdown] = useState<
-    "principal" | "avanzado" | "especial" | null
-  >("principal");
+  const [openDropdown, setOpenDropdown] = useState({
+    principal: true,
+    avanzado: true,
+    especial: true,
+  });
 
   // Paso 1: Selección del encuentro
   const partidosFiltrados = tipsterPicks.filter((p) =>
@@ -56,6 +59,13 @@ export default function MultiStepPickForm({
     setForm({ ...form, partido: partidoId });
   };
 
+  const toggleDropdown = (tipo: TypeDropdown) => {
+    setOpenDropdown((prev) => ({
+      ...prev,
+      [tipo]: !prev[tipo],
+    }));
+  };
+
   // Paso 2: lógica de selección única
   const handleCheckbox = (tipo: string, valor: string) => {
     setForm({
@@ -63,7 +73,6 @@ export default function MultiStepPickForm({
       mercado: valor,
       tipoMercado: tipo as "principal" | "avanzado" | "especial",
     });
-    // Ya no cerramos el dropdown automáticamente
   };
 
   // Paso 3: Análisis y monetización
@@ -156,9 +165,6 @@ export default function MultiStepPickForm({
                     <Badge className="bg-primary/10 text-primary">
                       {p.date}
                     </Badge>
-                    <Badge className="bg-success/10 text-success">
-                      {p.odds} cuota
-                    </Badge>
                   </div>
                 </CardContent>
               </Card>
@@ -175,7 +181,7 @@ export default function MultiStepPickForm({
             </Button>
             <Button
               type="button"
-              className="bg-primary text-primary-foreground"
+              className="bg-primary text-white"
               onClick={siguiente}
               disabled={!paso1Valido}
             >
@@ -196,21 +202,16 @@ export default function MultiStepPickForm({
               <button
                 type="button"
                 className="w-full flex items-center justify-between px-4 py-3 text-left text-foreground font-semibold focus:outline-none"
-                onClick={() =>
-                  setOpenDropdown(
-                    openDropdown === "principal" ? null : "principal"
-                  )
-                }
-                disabled={!!form.mercado && form.tipoMercado !== "principal"}
+                onClick={() => toggleDropdown("principal")}
               >
                 Mercado principal
-                {openDropdown === "principal" ? (
+                {openDropdown.principal ? (
                   <ChevronUp className="w-5 h-5" />
                 ) : (
                   <ChevronDown className="w-5 h-5" />
                 )}
               </button>
-              {openDropdown === "principal" && (
+              {openDropdown.principal && (
                 <div className="px-4 pb-3 pt-1 space-y-2">
                   {MERCADOS_PRINCIPALES.map((m) => (
                     <button
@@ -219,7 +220,7 @@ export default function MultiStepPickForm({
                       className={`w-full text-left px-3 py-2 rounded-md font-medium transition-colors ${
                         form.mercado === m && form.tipoMercado === "principal"
                           ? "bg-primary text-primary-foreground"
-                          : "bg-secondary text-foreground hover:bg-accent"
+                          : "bg-secondary text-foreground hover:bg-primary"
                       }`}
                       onClick={() => {
                         handleCheckbox("principal", m);
@@ -236,21 +237,16 @@ export default function MultiStepPickForm({
               <button
                 type="button"
                 className="w-full flex items-center justify-between px-4 py-3 text-left text-foreground font-semibold focus:outline-none"
-                onClick={() =>
-                  setOpenDropdown(
-                    openDropdown === "avanzado" ? null : "avanzado"
-                  )
-                }
-                disabled={!!form.mercado && form.tipoMercado !== "avanzado"}
+                onClick={() => toggleDropdown("avanzado")}
               >
                 Mercado avanzado
-                {openDropdown === "avanzado" ? (
+                {openDropdown.avanzado ? (
                   <ChevronUp className="w-5 h-5" />
                 ) : (
                   <ChevronDown className="w-5 h-5" />
                 )}
               </button>
-              {openDropdown === "avanzado" && (
+              {openDropdown.avanzado && (
                 <div className="px-4 pb-3 pt-1 space-y-2">
                   {MERCADOS_AVANZADOS.map((m) => (
                     <button
@@ -258,8 +254,8 @@ export default function MultiStepPickForm({
                       type="button"
                       className={`w-full text-left px-3 py-2 rounded-md font-medium transition-colors ${
                         form.mercado === m && form.tipoMercado === "avanzado"
-                          ? "bg-[#1e9df1] text-white"
-                          : "bg-[#E3ECF6] text-[#0f1419] hover:bg-[#d0eafd]"
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-secondary text-foreground hover:bg-primary"
                       }`}
                       onClick={() => {
                         handleCheckbox("avanzado", m);
@@ -276,21 +272,16 @@ export default function MultiStepPickForm({
               <button
                 type="button"
                 className="w-full flex items-center justify-between px-4 py-3 text-left text-foreground font-semibold focus:outline-none"
-                onClick={() =>
-                  setOpenDropdown(
-                    openDropdown === "especial" ? null : "especial"
-                  )
-                }
-                disabled={!!form.mercado && form.tipoMercado !== "especial"}
+                onClick={() => toggleDropdown("especial")}
               >
                 Especiales
-                {openDropdown === "especial" ? (
+                {openDropdown.especial ? (
                   <ChevronUp className="w-5 h-5" />
                 ) : (
                   <ChevronDown className="w-5 h-5" />
                 )}
               </button>
-              {openDropdown === "especial" && (
+              {openDropdown.especial && (
                 <div className="px-4 pb-3 pt-1 space-y-2">
                   {MERCADOS_ESPECIALES.map((m) => (
                     <button
@@ -298,8 +289,8 @@ export default function MultiStepPickForm({
                       type="button"
                       className={`w-full text-left px-3 py-2 rounded-md font-medium transition-colors ${
                         form.mercado === m && form.tipoMercado === "especial"
-                          ? "bg-[#1e9df1] text-white"
-                          : "bg-[#E3ECF6] text-[#0f1419] hover:bg-[#d0eafd]"
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-secondary text-foreground hover:bg-primary"
                       }`}
                       onClick={() => {
                         handleCheckbox("especial", m);
@@ -323,7 +314,7 @@ export default function MultiStepPickForm({
             </Button>
             <Button
               type="button"
-              className="bg-primary text-primary-foreground"
+              className="bg-primary text-white"
               onClick={siguiente}
               disabled={!paso2Valido}
             >
@@ -454,7 +445,7 @@ export default function MultiStepPickForm({
             </Button>
             <Button
               type="button"
-              className="bg-primary text-primary-foreground"
+              className="bg-primary text-white"
               onClick={siguiente}
               disabled={!paso3Valido}
             >
@@ -521,7 +512,7 @@ export default function MultiStepPickForm({
             >
               Atrás
             </Button>
-            <Button type="submit" className="bg-success text-white">
+            <Button type="submit" className="text-white">
               Confirmar y Crear Pick
             </Button>
           </div>
