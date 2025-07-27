@@ -55,7 +55,7 @@ const TipsterDashboardPanel: React.FC = () => {
             Hola, Samir 👋
           </h2>
           <Button
-            className="p-1 lg:p-2  dark:hover:bg-white/10 text-black dark:text-white hover:bg-black/10"
+            className="p-1 lg:p-2  dark:hover:bg-white/10 text-white hover:bg-black/10"
             onClick={() => router.push("/tipster/create-pick")}
           >
             Crear Pick
