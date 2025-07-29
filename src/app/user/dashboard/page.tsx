@@ -1,7 +1,7 @@
 "use client";
 
 import { ProtectedRoute } from "@/components/ProtectedRoute";
-import { useUserStore } from "@/lib/store/userStore";
+import { useAuth } from "@/context/AuthContext";
 import { userBets } from "@/mock/userBet";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import {
@@ -81,7 +81,7 @@ function getBestSports(bets: UserBet[]): BestSport[] {
 }
 
 const UserDashboardPage: React.FC = () => {
-  const user = useUserStore((state) => state.user);
+  const { user } = useAuth();
   const metrics = getUserMetrics(userBets, user?.credits ?? 0);
   const betsByDate = getBetsByDate(userBets);
   const sportsPie = getSportsPie(userBets);

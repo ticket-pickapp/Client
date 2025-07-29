@@ -3,14 +3,12 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { Coins, Menu, Target } from "lucide-react";
 import { Button } from "./ui/button";
-import { useAuthStore } from "@/lib/store/authStore";
+import { useAuth } from "@/context/AuthContext";
 import { useSidebarStore } from "@/lib/store/sidebarStore";
-import { useUserStore } from "@/lib/store/userStore";
 
 const Navbar = () => {
   const router = useRouter();
-  const { isLoggedIn } = useAuthStore();
-  const user = useUserStore((state) => state.user);
+  const { isLoggedIn, user } = useAuth();
   const { toggle } = useSidebarStore();
 
   return (

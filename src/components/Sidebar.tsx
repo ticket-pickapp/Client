@@ -14,16 +14,14 @@ import {
   Volleyball,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useAuthStore } from "@/lib/store/authStore";
+import { useAuth } from "@/context/AuthContext";
 import { useSidebarStore } from "@/lib/store/sidebarStore";
-import { useUserStore } from "@/lib/store/userStore";
 import ThemeMode from "./ThemeMode";
 
 const Sidebar: React.FC = () => {
   const router = useRouter();
   const { isOpen, close } = useSidebarStore();
-  const { user } = useUserStore();
-  const { logout } = useAuthStore();
+  const { user, logout } = useAuth();
 
   const handleLogout = () => {
     logout();
