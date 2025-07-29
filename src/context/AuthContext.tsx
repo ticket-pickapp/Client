@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { User } from "@/types/types";
+import { getUserById } from "@/mock/user";
 
 interface AuthContextType {
   user: User | null;
@@ -20,27 +21,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Simulación de login (igual que tu mock)
   const login = (email: string, password: string) => {
-    let mockUser: User;
-    if (email === "tipster@prueba.com") {
-      mockUser = {
-        id: "2",
-        name: "Tipster Profesional",
-        email,
-        credits: 100,
-        isPremium: true,
-        role: "tipster",
-      };
-    } else {
-      mockUser = {
-        id: "1",
-        name: "Juan Perez",
-        email,
-        credits: 100,
-        isPremium: true,
-        role: "user",
-      };
-    }
-    setUser(mockUser);
+    const mockUser = getUserById(email === "tipster@prueba.com" ? "2" : "1");
+    if (!mockUser) return;
+    setUser(mockUser as User);
     setIsLoggedIn(true);
     localStorage.setItem("user", JSON.stringify(mockUser));
     localStorage.setItem("isLoggedIn", "true");

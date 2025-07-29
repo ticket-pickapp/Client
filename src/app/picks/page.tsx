@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 
 const PICKS_PER_PAGE = 10;
 
@@ -45,7 +46,7 @@ const PicksPage = () => {
   );
   const { buyPick, hasPurchasedPick } = usePickStore();
   const { user } = useAuth();
- 
+  const router = useRouter();
 
   // Filtrado
   const filteredPicks = useMemo(() => {
@@ -78,7 +79,9 @@ const PicksPage = () => {
   const handleBuy = (pickId: number, cost: number) => {
     if (!user) return;
     if (user.credits < cost) {
-      toast.error(`No tienes suficientes créditos. Necesitas ${cost} créditos.`);
+      toast.error(
+        `No tienes suficientes créditos. Necesitas ${cost} créditos.`
+      );
       return;
     }
     if (!hasPurchasedPick(pickId)) {
@@ -116,7 +119,9 @@ const PicksPage = () => {
 
           {/* Desktop Table */}
           <div
-            style={{ filter: "drop-shadow(0 8px 32px rgba(31, 38, 135, 0.37))" }}
+            style={{
+              filter: "drop-shadow(0 8px 32px rgba(31, 38, 135, 0.37))",
+            }}
             className="hidden md:block bg-card rounded-lg border border-border overflow-hidden"
           >
             {/* Table Header */}
@@ -143,7 +148,10 @@ const PicksPage = () => {
                     {/* Main Row */}
                     <div className="px-6 py-4 hover:bg-secondary transition-colors">
                       <div className="grid grid-cols-12 gap-4 items-center">
-                        <div className="col-span-3 flex items-center gap-3">
+                        <div
+                          onClick={() => router.push("/tipster/profile/2")}
+                          className="col-span-3 flex items-center gap-3 cursor-pointer"
+                        >
                           <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground text-xs font-bold">
                             {pick.avatar}
                           </div>
@@ -326,7 +334,10 @@ const PicksPage = () => {
                 >
                   {/* Main Card Content */}
                   <div className="flex items-start justify-between mb-3">
-                    <div className="flex items-center gap-3 flex-1">
+                    <div
+                      onClick={() => router.push("/tipster/profile/2")}
+                      className="flex items-center gap-3 flex-1 cursor-pointer"
+                    >
                       <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-primary-foreground text-sm font-bold">
                         {pick.avatar}
                       </div>
@@ -382,8 +393,14 @@ const PicksPage = () => {
                       <AnimatePresence>
                         {!hasPurchasedPick(pick.id) && (
                           <motion.div
-                            initial={{ opacity: 1, backdropFilter: "blur(8px)" }}
-                            animate={{ opacity: 1, backdropFilter: "blur(8px)" }}
+                            initial={{
+                              opacity: 1,
+                              backdropFilter: "blur(8px)",
+                            }}
+                            animate={{
+                              opacity: 1,
+                              backdropFilter: "blur(8px)",
+                            }}
                             exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
                             transition={{ duration: 0.4, ease: "easeInOut" }}
                             className="absolute inset-0 z-10 flex w-full h-full flex-col items-center justify-center bg-black/40 rounded-lg"
@@ -455,7 +472,9 @@ const PicksPage = () => {
                             </span>
                           </div>
                           <div>
-                            <span className="text-muted-foreground">Fallos:</span>
+                            <span className="text-muted-foreground">
+                              Fallos:
+                            </span>
                             <span className="ml-2 font-medium text-destructive">
                               {pick.record.losses}
                             </span>

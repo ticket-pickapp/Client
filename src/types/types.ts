@@ -43,6 +43,16 @@ export interface User {
   credits: number;
   isPremium: boolean;
   role: "user" | "tipster";
+  bio: string;
+  avatar: string | null;
+  stats: {
+    picks: number;
+    won: number;
+    lost: number;
+    pending: number;
+    winrate: number;
+  };
+  picks: { id: number; match: string; result: "won" | "lost" | "pending" }[];
 }
 
 export type AuthContextType = {
