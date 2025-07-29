@@ -4,10 +4,11 @@ import { picks as picksMock } from "@/mock/pick";
 import { Clock, Star, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useUserStore } from "@/lib/store/userStore";
+import { usePickStore } from "@/lib/store/pickStore";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { useAuth } from "@/context/AuthContext";
 
 const PICKS_PER_PAGE = 10;
 
@@ -42,7 +43,9 @@ const PicksPage = () => {
   const [mobileExpandedPick, setMobileExpandedPick] = useState<number | null>(
     null
   );
-  const { buyPick, hasPurchasedPick } = useUserStore();
+  const { buyPick, hasPurchasedPick } = usePickStore();
+  const { user } = useAuth();
+ 
 
   // Filtrado
   const filteredPicks = useMemo(() => {
@@ -71,16 +74,23 @@ const PicksPage = () => {
     setMobileExpandedPick(mobileExpandedPick === id ? null : id);
   };
 
+  // Nueva función para comprar pick
   const handleBuy = (pickId: number, cost: number) => {
-    const ok = buyPick(pickId, cost);
-    if (ok) {
+    if (!user) return;
+    if (user.credits < cost) {
+      toast.error(`No tienes suficientes créditos. Necesitas ${cost} créditos.`);
+      return;
+    }
+    if (!hasPurchasedPick(pickId)) {
+      // Restar créditos al usuario
+      user.credits -= cost;
+      // Guardar pick comprado
+      buyPick(pickId);
       toast.success("¡Pick comprado exitosamente!");
       setExpandedPick(null);
       setTimeout(() => setExpandedPick(pickId), 0);
     } else {
-      toast.error(
-        `No tienes suficientes créditos. Necesitas ${cost} créditos.`
-      );
+      toast.success("¡Ya has comprado este pick!");
     }
   };
 
