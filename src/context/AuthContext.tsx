@@ -10,6 +10,7 @@ interface AuthContextType {
   login: (email: string, password: string) => void;
   logout: () => void;
   loading: boolean;
+  updateCredits: (newCredits: number) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -36,6 +37,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.removeItem("isLoggedIn");
   };
 
+  // Función para actualizar créditos
+  const updateCredits = (newCredits: number) => {
+    if (user) {
+      const updatedUser = { ...user, credits: newCredits };
+      setUser(updatedUser);
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+    }
+  };
+
   // Hidratar desde localStorage al montar
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -53,7 +63,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, isLoggedIn, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, isLoggedIn, login, logout, loading, updateCredits }}>
       {children}
     </AuthContext.Provider>
   );

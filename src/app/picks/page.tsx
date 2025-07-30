@@ -45,7 +45,7 @@ const PicksPage = () => {
     null
   );
   const { buyPick, hasPurchasedPick } = usePickStore();
-  const { user } = useAuth();
+  const { user, updateCredits } = useAuth();
   const router = useRouter();
 
   // Filtrado
@@ -85,8 +85,8 @@ const PicksPage = () => {
       return;
     }
     if (!hasPurchasedPick(pickId)) {
-      // Restar créditos al usuario
-      user.credits -= cost;
+      // Actualizar créditos usando la función del contexto
+      updateCredits(user.credits - cost);
       // Guardar pick comprado
       buyPick(pickId);
       toast.success("¡Pick comprado exitosamente!");
